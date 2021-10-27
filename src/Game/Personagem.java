@@ -2,21 +2,33 @@ package Game;
 
 public class Personagem {
 
-    private ClassesDePersonagem tipo;
-    private int sexo;
-    private String arma;
     private String nome;
+    private int sexo;
+    private String classe;
     private int pontos_ataque;
     private int pontos_defesa;
+    private String arma;
+    private int dano_arma;
 
-//    public Personagem(ClassesDePersonagem tipo, int pontos_ataque, int pontos_defesa) {
-//        this.tipo = tipo;
-//        this.pontos_ataque = pontos_ataque;
-//        this.pontos_defesa = pontos_defesa;
-//    }
+    @Override
+    public String toString() {
+        return "Personagem{" +
+                "nome='" + nome + '\'' +
+                ", sexo=" + sexo +
+                ", classe=" + classe +
+                ", pontos_ataque=" + pontos_ataque +
+                ", pontos_defesa=" + pontos_defesa +
+                ", arma=" + arma +
+                ", dano_arma=" + dano_arma +
+                '}';
+    }
 
-    public ClassesDePersonagem getTipo() {
-        return tipo;
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public int getSexo() {
@@ -27,6 +39,30 @@ public class Personagem {
         this.sexo = sexo;
     }
 
+    public String getClasse() {
+        return classe;
+    }
+
+    public void setClasse(String classe) {
+        this.classe = classe;
+    }
+
+    public int getPontos_ataque() {
+        return pontos_ataque;
+    }
+
+    public void setPontos_ataque(int pontos_ataque) {
+        this.pontos_ataque = pontos_ataque;
+    }
+
+    public int getPontos_defesa() {
+        return pontos_defesa;
+    }
+
+    public void setPontos_defesa(int pontos_defesa) {
+        this.pontos_defesa = pontos_defesa;
+    }
+
     public String getArma() {
         return arma;
     }
@@ -35,12 +71,12 @@ public class Personagem {
         this.arma = arma;
     }
 
-    public String getNome() {
-        return nome;
+    public int getDano_arma() {
+        return dano_arma;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setDano_arma(int dano_arma) {
+        this.dano_arma = dano_arma;
     }
 }
 

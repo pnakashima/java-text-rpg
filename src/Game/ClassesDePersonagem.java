@@ -7,14 +7,18 @@ public enum ClassesDePersonagem {
     MAGO("Mago",120, 600),
     ESTUDANTE("Estudante do SENAI",70, 1200);
 
-    private final String nome;
+    private final String classe;
     private final Integer pontos_defesa;
     private final Integer pontos_ataque;
 
-    private ClassesDePersonagem(String nome, Integer pontos_ataque, Integer pontos_defesa) {
-        this.nome = nome;
+    ClassesDePersonagem(String classe, Integer pontos_ataque, Integer pontos_defesa) {
+        this.classe = classe;
         this.pontos_defesa = pontos_defesa;
         this.pontos_ataque = pontos_ataque;
+    }
+
+    public String getClasse() {
+        return classe;
     }
 
     public Integer getPontos_defesa() {
@@ -28,7 +32,7 @@ public enum ClassesDePersonagem {
     public String toString() {
 //        return ordinal()+1 + " - " + this.nome + " (Ataque: " + this.pontos_ataque + " / Defesa " + this.pontos_defesa + ")" ;
         String saida = "%d - %s (Ataque: %d | Defesa: %d)";
-        return String.format(saida, ordinal()+1, this.nome, this.pontos_ataque, this.pontos_defesa);
+        return String.format(saida, ordinal()+1, this.classe, this.pontos_ataque, this.pontos_defesa);
     }
 }
 

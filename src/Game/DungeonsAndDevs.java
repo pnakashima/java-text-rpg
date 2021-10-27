@@ -18,7 +18,7 @@ public class DungeonsAndDevs {
 
     public static void imprimeOpcoes(List opcoes) {
         for (int i = 1; i <= opcoes.size(); i++) {
-            System.out.println(i + " - " + opcoes.get(i-1));
+            System.out.println(i + " - " + opcoes.get(i - 1));
         }
     }
 
@@ -47,14 +47,14 @@ public class DungeonsAndDevs {
         Personagem heroi = new Personagem();
         Jogo jogo = new Jogo();
 
-        ArrayList<String> nivel_dificuldade = new ArrayList<String>();
-        nivel_dificuldade.add("Fácil");
-        nivel_dificuldade.add("Normal");
-        nivel_dificuldade.add("Difícil");
+//        ArrayList<String> nivel_dificuldade = new ArrayList<String>();
+//        nivel_dificuldade.add("Fácil");
+//        nivel_dificuldade.add("Normal");
+//        nivel_dificuldade.add("Difícil");
 
-        ArrayList<String> sexo_personagem = new ArrayList<String>();
-        sexo_personagem.add("Homem (+20 de Ataque para Guerreiros e Arqueiros)");
-        sexo_personagem.add("Mulher (+20 de Ataque para Magas e Estudantes)");
+//        ArrayList<String> sexo_personagem = new ArrayList<String>();
+//        sexo_personagem.add("Homem (+20 de Ataque para Guerreiros e Arqueiros)");
+//        sexo_personagem.add("Mulher (+20 de Ataque para Magas e Estudantes)");
 
 //        // FAZER UM FOR NO ENUM, PEGANDO OS NOMES E PROPRIEDADES
 //        ArrayList<String> classe_personagem = new ArrayList<String>();
@@ -82,8 +82,8 @@ public class DungeonsAndDevs {
         int dificuldade = 0;
         int sexo = 0;
         int classe = 0;
-        String arma = "";
-        int tamanho =0;
+        int arma = 0;
+        int tamanho = 0;
 
 
         //INÍCIO DO JOGO
@@ -92,7 +92,7 @@ public class DungeonsAndDevs {
         while (dificuldade == 0) {
             System.out.println("Escolha o nível de dificuldade: ");
             tamanho = 0;
-            for (NiveisDeDificuldade item: NiveisDeDificuldade.values()) {
+            for (NiveisDeDificuldade item : NiveisDeDificuldade.values()) {
                 System.out.println(item);
                 tamanho++;
             }
@@ -103,125 +103,66 @@ public class DungeonsAndDevs {
         }
         jogo.setDificuldade(dificuldade);
 
+        System.out.println("Nome do seu personagem: ");
+        String nome = input.nextLine();
+        heroi.setNome(nome);
 
-
-
-
-
-//
-//        System.out.println("Nome do seu personagem: ");
-//        String nome = input.nextLine();
-//        heroi.setNome(nome);
-//
-//        System.out.println("Escolha o sexo do seu personagem: ");
-//        while (sexo == 0) {
-//            imprimeOpcoes(sexo_personagem);
-//            sexo = input.nextInt();
-//            if (!verificaOpcao(sexo_personagem, sexo)) {
-//                sexo = 0;
-//            }
-//        }
-//        heroi.setSexo(sexo);
-
-
-
-
-
-
-
-
-
-
-
-
-
+        while (sexo == 0) {
+            System.out.println("Escolha o sexo do seu personagem: ");
+            tamanho = 0;
+            for (GenerosDePersonagem item : GenerosDePersonagem.values()) {
+                System.out.println(item);
+                tamanho++;
+            }
+            sexo = Integer.parseInt(input.nextLine());
+            if (!verificaOpcao(tamanho, sexo)) {
+                sexo = 0;
+            }
+        }
+        heroi.setSexo(sexo);
 
         while (classe == 0) {
             System.out.println("Escolha uma classe de combate: ");
             tamanho = 0;
-            for (ClassesDePersonagem item: ClassesDePersonagem.values()) {
+            for (ClassesDePersonagem item : ClassesDePersonagem.values()) {
                 System.out.println(item);
                 tamanho++;
             }
-            classe = input.nextInt();
+            classe = Integer.parseInt(input.nextLine());
             if (!verificaOpcao(tamanho, classe)) {
                 classe = 0;
             }
         }
+        heroi.setClasse(ClassesDePersonagem.values()[classe - 1].getClasse());
+        heroi.setPontos_ataque(ClassesDePersonagem.values()[classe - 1].getPontos_ataque());
+        heroi.setPontos_defesa(ClassesDePersonagem.values()[classe - 1].getPontos_defesa());
 
-
-//        TiposDeArma armas[] = TiposDeArma.values();
-//        System.out.println("Tipos de Arma: ");
-//        for (TiposDeArma arma: armas) {
-//            if (arma.getClasse().equals("guerreiro"))
-//                System.out.println(arma);
-//        }
-//
-//
-//        public static boolean verificaOpcao(List opcoes, Integer opcao) {
-//            Scanner input = new Scanner(System.in);
-//            String continuar = "";
-////        System.out.println(opcao.getClass());
-//            if ((opcao < 1) || (opcao > opcoes.size())) {
-//                System.out.println("Escolha uma opção válida!");
-//                return false;
+        while (arma == 0) {
+            System.out.println("Escolha uma arma: ");
+            tamanho = 0;
+            for (TiposDeArma item : TiposDeArma.values()) {
+                if (item.getClasse().equals(ClassesDePersonagem.values()[classe - 1].getClasse())) {
+                    System.out.println(item);
+                    tamanho++;
+                }
+            }
+            arma = Integer.parseInt(input.nextLine());
+//            if (!verificaOpcao(tamanho, arma)) {
+//                arma = 0;
 //            }
-//            return true;
-//        }
-//
-//        public static void imprimeOpcoes(List opcoes) {
-//            for (int i = 1; i <= opcoes.size(); i++) {
-//                System.out.println(i + " - " + opcoes.get(i-1));
-//            }
-//        }
+        }
+        String arma_escolhida = (TiposDeArma.values()[arma - 1].getMunicao().equals("")) ? TiposDeArma.values()[arma - 1].getNome() : TiposDeArma.values()[arma - 1].getNome() + " e " + TiposDeArma.values()[arma - 1].getMunicao();
+        heroi.setArma(arma_escolhida);
+        heroi.setDano_arma(TiposDeArma.values()[arma - 1].getDano());
 
+        System.out.println(heroi);
 
+        jogo.setSair(false);
 
+        for (FasesDoJogo item : FasesDoJogo.values()) {
 
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-//
-//        while (arma.equals("")) {
-//            System.out.println("Escolha uma arma: ");
-//            if (classe == 1) {
-//                //Guerreiro
-//                Personagem heroi = new Personagem(ClassesDePersonagem.GUERREIRO, ClassesDePersonagem.GUERREIRO.getPontos_ataque(), ClassesDePersonagem.GUERREIRO.getPontos_defesa());
-//                arma = escolheArma(armas_guerreiro);
-//            } else if (classe == 2) {
-//                //Arqueiro
-//                Personagem heroi = new Personagem(ClassesDePersonagem.ARQUEIRO, ClassesDePersonagem.ARQUEIRO.getPontos_ataque(), ClassesDePersonagem.ARQUEIRO.getPontos_defesa());
-//                arma = escolheArma(armas_arqueiro);
-//            } else if (classe == 3) {
-//                //Mago
-//                Personagem heroi = new Personagem(ClassesDePersonagem.MAGO, ClassesDePersonagem.MAGO.getPontos_ataque(), ClassesDePersonagem.MAGO.getPontos_defesa());
-//                arma = escolheArma(armas_mago);
-//            } else if (classe == 4) {
-//                //Estudante
-//                Personagem heroi = new Personagem(ClassesDePersonagem.ESTUDANTE, ClassesDePersonagem.ESTUDANTE.getPontos_ataque(), ClassesDePersonagem.ESTUDANTE.getPontos_defesa());
-//                arma = escolheArma(armas_estudante);
-//            }
-//        }
-//        heroi.setArma(arma);
-//
-//        System.out.println("Nome " + heroi.getNome());
-//        System.out.println("Sexo " + heroi.getSexo());
-////        System.out.println("Classe " + heroi.getClasse());
-//        System.out.println("Arma " + heroi.getArma());
-//        System.out.println("Dificuldade " + jogo.getDificuldade());
-//
-
-
-//        boolean sair = false;
 //
 //        //Introdução
 //        System.out.println("A noite se aproxima, a lua já surge no céu, estrelas vão se acendendo, e sob a luz do " +
