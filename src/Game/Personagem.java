@@ -3,12 +3,13 @@ package Game;
 public class Personagem {
 
     private String nome;
-    private int sexo;
+    private String sexo;
     private String classe;
     private int pontos_ataque;
     private int pontos_defesa;
     private String arma;
     private int dano_arma;
+    private String motivacao;
 
     @Override
     public String toString() {
@@ -31,11 +32,11 @@ public class Personagem {
         this.nome = nome;
     }
 
-    public int getSexo() {
+    public String getSexo() {
         return sexo;
     }
 
-    public void setSexo(int sexo) {
+    public void setSexo(String sexo) {
         this.sexo = sexo;
     }
 

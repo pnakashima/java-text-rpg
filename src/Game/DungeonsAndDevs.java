@@ -119,7 +119,7 @@ public class DungeonsAndDevs {
                 sexo = 0;
             }
         }
-        heroi.setSexo(sexo);
+        heroi.setSexo(GenerosDePersonagem.values()[sexo - 1].getGenero());
 
         while (classe == 0) {
             System.out.println("Escolha uma classe de combate: ");
@@ -160,22 +160,20 @@ public class DungeonsAndDevs {
         jogo.setSair(false);
 
         for (FasesDoJogo item : FasesDoJogo.values()) {
-
+            System.out.println(item.getTexto());
         }
 
-//
-//        //Introdução
-//        System.out.println("A noite se aproxima, a lua já surge no céu, estrelas vão se acendendo, e sob a luz do " +
-//                "crepúsculo você está prestes a entrar na fase final da sua missão. Você olha para o portal à sua frente, " +
-//                "e sabe que a partir desse ponto, sua vida mudará para sempre.\n" +
-//                "\n" +
-//                "Memórias do caminho percorrido para chegar até aqui invadem sua mente. Você se lembra de todos os " +
-//                "inimigos já derrotados para alcançar o covil do líder maligno. Olha para seu equipamento de combate, já " +
-//                "danificado e desgastado depois de tantas lutas. Você está a um passo de encerrar para sempre esse mal.\n" +
-//                "\n" +
-//                "Buscando uma injeção de ânimo, você se força a lembrar o que te trouxe até aqui.\n");
-//
-//        System.out.println("Escolha sua motivação para invadir a caverna do inimigo e derrotá-lo: ");
+
+        //Introdução
+        System.out.println("A noite se aproxima, a lua já surge no céu, estrelas vão se acendendo, e sob a luz do\n" +
+                "crepúsculo você está prestes a entrar na fase final da sua missão. Você olha para o portal à sua frente,\n" +
+                "e sabe que a partir desse ponto, sua vida mudará para sempre.\n" +
+                "Memórias do caminho percorrido para chegar até aqui invadem sua mente. Você se lembra de todos os inimigos\n" +
+                "já derrotados para alcançar o covil do líder maligno. Olha para seu equipamento de combate, já danificado e \n" +
+                "desgastado depois de tantas lutas. Você está a um passo de encerrar para sempre esse mal.\n" +
+                "Buscando uma injeção de ânimo, você se força a lembrar o que te trouxe até aqui.\n");
+
+        System.out.println("Escolha sua motivação para invadir a caverna do inimigo e derrotá-lo: ");
 //
 //        String texto_motivacao = "";
 //        System.out.println("1 - Vingança");

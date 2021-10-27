@@ -3,21 +3,27 @@ package Game;
 import java.util.ArrayList;
 
 public enum GenerosDePersonagem {
-    HOMEM("Homem (+20 de Ataque para Guerreiros e Arqueiros)"),
-    MULHER("Mulher (+20 de Ataque para Magas e Estudantes)");
+    MASC("Masculino","Masculino (+20 de Ataque para Guerreiros e Arqueiros)"),
+    FEM("Feminino", "Feminino (+20 de Ataque para Magas e Estudantes)");
 
-    private final String nome;
+    private final String genero;
+    private final String texto;
 
-    private GenerosDePersonagem(String nome) {
-        this.nome = nome;
+    GenerosDePersonagem(String genero, String texto) {
+        this.genero = genero;
+        this.texto = texto;
     }
 
-    public String getNome() {
-        return nome;
+    public String getGenero() {
+        return genero;
+    }
+
+    public String getTexto() {
+        return texto;
     }
 
     public String toString() {
         String saida = "%d - %s";
-        return String.format(saida, ordinal()+1, this.nome);
+        return String.format(saida, ordinal() + 1, this.texto);
     }
 }
