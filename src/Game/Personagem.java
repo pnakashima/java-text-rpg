@@ -79,6 +79,14 @@ public class Personagem {
     public void setDano_arma(int dano_arma) {
         this.dano_arma = dano_arma;
     }
+
+    public String getMotivacao() {
+        return motivacao;
+    }
+
+    public void setMotivacao(String motivacao) {
+        this.motivacao = motivacao;
+    }
 }
 
 

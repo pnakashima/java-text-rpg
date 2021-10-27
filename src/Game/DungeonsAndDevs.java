@@ -1,8 +1,6 @@
 package Game;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class DungeonsAndDevs {
@@ -16,79 +14,34 @@ public class DungeonsAndDevs {
         return true;
     }
 
-    public static void imprimeOpcoes(List opcoes) {
-        for (int i = 1; i <= opcoes.size(); i++) {
-            System.out.println(i + " - " + opcoes.get(i - 1));
+    public static int rolarDado(Integer lados, boolean critico) {
+        Random dado = new Random();
+        int dano = dado.nextInt(lados + 1) + 1;
+        if (critico) {
+            if (dano == lados) {
+                System.out.println("DANO CRÍTICO!!!");
+                dano = 1000;
+            }
+            if (dano == 1) {
+                System.out.println("ERROUUUUUUUUU!!!");
+                dano = 0;
+            }
         }
+        return dano;
     }
 
-//    public static String escolheArma(ArrayList armas) {
-//        Scanner input = new Scanner(System.in);
-//        imprimeOpcoes(armas);
-//        int arma = input.nextInt();
-//        if (!verificaOpcao(armas, arma)) {
-//            arma = 0;
-//        }
-//        String arma_escolhida = (String) armas.get(arma);
-//        return arma_escolhida;
-//    }
-
-//    public static void imprimeClasses(enum Cl) {
-//        TiposDeArma armas[] = TiposDeArma.values();
-//        System.out.println("Tipos de Arma: ");
-//        for (TiposDeArma arma: armas) {
-//            if (arma.getClasse().equals("guerreiro"))
-//                System.out.println(arma);
-//        }
-//    }
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         Personagem heroi = new Personagem();
         Jogo jogo = new Jogo();
 
-//        ArrayList<String> nivel_dificuldade = new ArrayList<String>();
-//        nivel_dificuldade.add("Fácil");
-//        nivel_dificuldade.add("Normal");
-//        nivel_dificuldade.add("Difícil");
-
-//        ArrayList<String> sexo_personagem = new ArrayList<String>();
-//        sexo_personagem.add("Homem (+20 de Ataque para Guerreiros e Arqueiros)");
-//        sexo_personagem.add("Mulher (+20 de Ataque para Magas e Estudantes)");
-
-//        // FAZER UM FOR NO ENUM, PEGANDO OS NOMES E PROPRIEDADES
-//        ArrayList<String> classe_personagem = new ArrayList<String>();
-//        classe_personagem.add("Guerreiro (Ataque: 100 / Pontos de Vida: 700)");
-//        classe_personagem.add("Arqueiro (Ataque: 80 / Pontos de Vida: 1000)");
-//        classe_personagem.add("Mago (Ataque: 120 / Pontos de Vida: 600");
-//        classe_personagem.add("Estudante do SENAI (Ataque: 70 / Pontos de Vida: 1200");
-
-        ArrayList<String> armas_guerreiro = new ArrayList<String>();
-        armas_guerreiro.add("Espada (Ataque: 25)");
-        armas_guerreiro.add("Machado (Ataque: 20)");
-        armas_guerreiro.add("Martelo (Ataque: 15)");
-        armas_guerreiro.add("Clava (Ataque: 10)");
-
-        ArrayList<String> armas_arqueiro = new ArrayList<String>();
-        armas_arqueiro.add("Arco e Flecha (Ataque: 20)");
-        armas_arqueiro.add("Besta e Virote (Ataque: 15)");
-
-        ArrayList<String> armas_mago = new ArrayList<String>();
-        armas_mago.add("Cajado (Ataque: 20)");
-
-        ArrayList<String> armas_estudante = new ArrayList<String>();
-        armas_estudante.add("Livro (Ataque: 50)");
-
-        int dificuldade = 0;
-        int sexo = 0;
-        int classe = 0;
-        int arma = 0;
-        int tamanho = 0;
-
 
         //INÍCIO DO JOGO
         System.out.println("Seja bem vindo(a) à BATALHA FINAL!");
 
+        int tamanho = 0;
+        int dificuldade = 0;
         while (dificuldade == 0) {
             System.out.println("Escolha o nível de dificuldade: ");
             tamanho = 0;
@@ -107,6 +60,7 @@ public class DungeonsAndDevs {
         String nome = input.nextLine();
         heroi.setNome(nome);
 
+        int sexo = 0;
         while (sexo == 0) {
             System.out.println("Escolha o sexo do seu personagem: ");
             tamanho = 0;
@@ -121,6 +75,7 @@ public class DungeonsAndDevs {
         }
         heroi.setSexo(GenerosDePersonagem.values()[sexo - 1].getGenero());
 
+        int classe = 0;
         while (classe == 0) {
             System.out.println("Escolha uma classe de combate: ");
             tamanho = 0;
@@ -137,6 +92,7 @@ public class DungeonsAndDevs {
         heroi.setPontos_ataque(ClassesDePersonagem.values()[classe - 1].getPontos_ataque());
         heroi.setPontos_defesa(ClassesDePersonagem.values()[classe - 1].getPontos_defesa());
 
+        int arma = 0;
         while (arma == 0) {
             System.out.println("Escolha uma arma: ");
             tamanho = 0;
@@ -158,107 +114,116 @@ public class DungeonsAndDevs {
         System.out.println(heroi);
 
         jogo.setSair(false);
+        while (!jogo.isSair()) {
+//        for (FasesDoJogo item : FasesDoJogo.values()) {
+//            System.out.println(item.getTexto());
+//        }
 
-        for (FasesDoJogo item : FasesDoJogo.values()) {
-            System.out.println(item.getTexto());
+
+            //Introdução
+            System.out.println("A noite se aproxima, a lua já surge no céu, estrelas vão se acendendo, e sob a luz do\n" +
+                    "crepúsculo você está prestes a entrar na fase final da sua missão. Você olha para o portal à sua frente,\n" +
+                    "e sabe que a partir desse ponto, sua vida mudará para sempre.\n" +
+                    "Memórias do caminho percorrido para chegar até aqui invadem sua mente. Você se lembra de todos os inimigos\n" +
+                    "já derrotados para alcançar o covil do líder maligno. Olha para seu equipamento de combate, já danificado e \n" +
+                    "desgastado depois de tantas lutas. Você está a um passo de encerrar para sempre esse mal.\n" +
+                    "Buscando uma injeção de ânimo, você se força a lembrar o que te trouxe até aqui.\n");
+
+
+            int motivacao = 0;
+            while (motivacao == 0) {
+                System.out.println("Escolha sua motivação para invadir a caverna do inimigo e derrotá-lo: ");
+                tamanho = 0;
+                for (TiposDeMotivacao item : TiposDeMotivacao.values()) {
+                    System.out.println(item);
+                    tamanho++;
+                }
+                motivacao = Integer.parseInt(input.nextLine());
+                if (!verificaOpcao(tamanho, motivacao)) {
+                    motivacao = 0;
+                }
+            }
+            heroi.setMotivacao(TiposDeMotivacao.values()[motivacao - 1].getNome());
+
+            System.out.println(TiposDeMotivacao.values()[motivacao - 1].getTexto());
+
+            System.out.println("Inspirado pelo motivo que te trouxe até aqui, você sente seu coração ardendo em chamas, suas\n" +
+                    "mãos formigarem em volta da sua arma. Você a segura com firmeza. Seu foco está renovado. Você avança pelo portal.\n" +
+                    "A escuridão te envolve. Uma iluminação muito fraca entra pelo portal às suas costas. À sua frente, só é" +
+                    "possível perceber que você se encontra em um corredor extenso. Você só pode ir à frente, ou desistir.\n");
+
+            int fase1 = 0;
+            while (fase1 == 0) {
+                tamanho = 0;
+                for (EscolhasFase1 item : EscolhasFase1.values()) {
+                    System.out.println(item);
+                    tamanho++;
+                }
+                fase1 = Integer.parseInt(input.nextLine());
+                if (!verificaOpcao(tamanho, fase1)) {
+                    fase1 = 0;
+                }
+            }
+            if (EscolhasFase1.values()[fase1 - 1].getNome().equals("Desistir")) {
+                jogo.setSair(true);
+                System.out.println(EscolhasFase1.values()[fase1 - 1].getTexto());
+                break;
+            }
+            System.out.println(EscolhasFase1.values()[fase1 - 1].getTexto());
+
+            System.out.println("Você se pergunta se dentro dessa sala pode haver inimigos, ou alguma armadilha, e pondera sobre como passar pela porta.\n");
+
+            int fase2 = 0;
+            while (fase2 == 0) {
+                tamanho = 0;
+                for (EscolhasFase2 item : EscolhasFase2.values()) {
+                    System.out.println(item);
+                    tamanho++;
+                }
+                fase2 = Integer.parseInt(input.nextLine());
+                if (!verificaOpcao(tamanho, fase2)) {
+                    fase2 = 0;
+                }
+            }
+            System.out.println(EscolhasFase2.values()[fase2 - 1].getTexto());
+            if (EscolhasFase2.values()[fase2 - 1].getNome().equals("Andando")) {
+                int dano = rolarDado(10, false);
+                System.out.println("TOMOU DANO DE " + dano);
+                heroi.setPontos_defesa(heroi.getPontos_defesa() - dano);
+            }
+
+            System.out.println(heroi);
+
+            System.out.println("Você se encontra sozinho em uma sala quadrada, contendo uma porta em cada parede. Uma delas " +
+                    "foi aquela pela qual você entrou, que estava aberta, e as outras três estão fechadas. A porta à sua " +
+                    "frente é a maior das quatro, com inscrições em seu entorno em uma língua que você não sabe ler, mas " +
+                    "reconhece como sendo a língua antiga utilizada pelo inimigo. Você se aproxima da porta e percebe que " +
+                    "ela está trancada por duas fechaduras douradas, e você entende que precisará primeiro derrotar o que " +
+                    "estiver nas outras duas portas laterais, antes de conseguir enfrentar o líder.\n" +
+                    "\n" +
+                    "Você se dirige para a porta à direita.\n");
+
+            System.out.println("Você se aproxima, tentando ouvir o que acontece porta adentro, mas não escuta nada. Segura " +
+                    "com mais força sua arma com uma mão, enquanto empurra a porta com a outra. Ao entrar, você se depara " +
+                    "com uma sala espaçosa, com vários equipamentos de batalha pendurados nas paredes e dispostos em " +
+                    "armários e mesas. Você imagina que este seja o arsenal do inimigo, onde estão guardados os equipamentos " +
+                    "que seus soldados utilizam quando saem para espalhar o terror nas cidades e vilas da região.\n" +
+                    "\n" +
+                    "Enquanto seu olhar percorre a sala, você ouve a porta se fechando e gira rapidamente para olhar para " +
+                    "trás. Ali, de pé entre você e a porta fechada, bloqueando o caminho do seu destino, está um dos capitães " +
+                    "do inimigo. Um orque horrendo, de armadura, capacete e espada em punho, em posição de combate. Ele avança em sua direção.\n");
+
+            Personagem armeiro = new Personagem();
+            armeiro.setPontos_defesa(500);
+            armeiro.setDano_arma(10);
+            armeiro.setPontos_ataque(80);
+            armeiro.setNome("Rambo");
+
+            jogo.luta(heroi, armeiro);
+
         }
 
 
-        //Introdução
-        System.out.println("A noite se aproxima, a lua já surge no céu, estrelas vão se acendendo, e sob a luz do\n" +
-                "crepúsculo você está prestes a entrar na fase final da sua missão. Você olha para o portal à sua frente,\n" +
-                "e sabe que a partir desse ponto, sua vida mudará para sempre.\n" +
-                "Memórias do caminho percorrido para chegar até aqui invadem sua mente. Você se lembra de todos os inimigos\n" +
-                "já derrotados para alcançar o covil do líder maligno. Olha para seu equipamento de combate, já danificado e \n" +
-                "desgastado depois de tantas lutas. Você está a um passo de encerrar para sempre esse mal.\n" +
-                "Buscando uma injeção de ânimo, você se força a lembrar o que te trouxe até aqui.\n");
-
-        System.out.println("Escolha sua motivação para invadir a caverna do inimigo e derrotá-lo: ");
-//
-//        String texto_motivacao = "";
-//        System.out.println("1 - Vingança");
-//        System.out.println("2 - Glória");
-//        int motivacao = input.nextInt();
-//        if (motivacao == 1) {
-//            texto_motivacao = "Imagens daquela noite trágica invadem sua mente. Você nem precisa se esforçar para lembrar, " +
-//                    "pois essas memórias estão sempre presentes, mesmo que de pano de fundo, quando você tem outros " +
-//                    "pensamentos em foco, elas nunca o deixaram. Elas são o combustível que te fizeram chegar até aqui. " +
-//                    "E você sabe que não irá desistir até ter vingado a morte daqueles que foram - e pra sempre serão - " +
-//                    "sua fonte de amor e desejo de continuar vivo. O maldito líder finalmente pagará por tanto mal causado " +
-//                    "na vida de tantos (e principalmente na sua).\n";
-//        } else if (motivacao == 2) {
-//            texto_motivacao = "Você já consegue visualizar na sua mente o povo da cidade te recebendo de braços abertos, " +
-//                    "bardos criando canções sobre seus feitos heróicos, nobres te presenteando com jóias e diversas " +
-//                    "riquezas, taberneiros se recusando a cobrar por suas bebedeiras e comilanças. Desde já, você sente " +
-//                    "o amor do público, te louvando a cada passo que dá pelas ruas, depois de destruir o vilão que tanto " +
-//                    "assombrou a paz de todos. Porém, você sabe que ainda falta o último ato dessa história. Você se " +
-//                    "concentra na missão. A glória o aguarda, mas não antes da última batalha.\n";
-//        } else {
-//            System.out.println("Digite uma opção válida");
-//        }
-//        System.out.println(motivacao);
-//
-//        System.out.println("Inspirado pelo motivo que te trouxe até aqui, você sente seu coração ardendo em chamas, " +
-//                "suas mãos formigarem em volta da sua arma. Você a segura com firmeza. Seu foco está renovado. Você " +
-//                "avança pelo portal.\n" +
-//                "\n" +
-//                "A escuridão te envolve. Uma iluminação muito fraca entra pelo portal às suas costas. À sua frente, só " +
-//                "é possível perceber que você se encontra em um corredor extenso. Você só pode ir à frente, ou desistir.\n");
-//        System.out.println("1 - Seguir em frente");
-//        System.out.println("2 - Desistir");
-//        int escolha = input.nextInt();
-//        String texto_escolha = "";
-//        if (escolha == 1) {
-//            texto_escolha = "O medo invade o seu coração e você sente que ainda não está à altura do desafio. Você se " +
-//                    "volta para a noite lá fora e corre em direção à segurança.\n";
-//            sair = true;
-//        } else if (escolha == 2) {
-//            texto_escolha = "Você caminha, atento a todos os seus sentidos, por vários metros, até visualizar a frente " +
-//                    "uma fonte de luz, que você imagina ser a chama de uma tocha, vindo de dentro de uma porta aberta.\n";
-//        }
-//
-//        System.out.println("você caminha, atento a todos os seus sentidos, por vários metros, até visualizar a frente " +
-//                "uma fonte de luz, que você imagina ser a chama de uma tocha, vindo de dentro de uma porta aberta.\n");
-//        System.out.println("1 - Andando cuidadosamente");
-//        System.out.println("2 - Correndo");
-//        System.out.println("3 - Saltando");
-//        escolha = input.nextInt();
-//        if (escolha == 1) {
-//            texto_escolha = "Você toma cuidado e vai caminhando vagarosamente em direção à luz. Quando você pisa " +
-//                    "exatamente embaixo da porta, você sente o chão ceder levemente, como se tivesse pisado em uma pedra " +
-//                    "solta. Você ouve um ruído de mecanismos se movimentando, e uma escotilha se abre no teto atrás de " +
-//                    "você, no corredor. Flechas voam da escotilha em sua direção, e você salta para dentro da sala, " +
-//                    "porém uma delas te acerta na perna.";
-//            // TOMAR DANO DE 1 A 10
-//        } else if (escolha == 2) {
-//            texto_escolha = "Você respira fundo e desata a correr em direção à sala. Quando passa pela porta, sente " +
-//                    "que pisou em uma pedra solta, mas não dá muita importância e segue para dentro da sala, olhando " +
-//                    "ao redor à procura de inimigos. Não tem ninguém, mas você ouve sons de flechas batendo na pedra " +
-//                    "atrás de você, e quando se vira, vê várias flechas no chão. Espiando pela porta, você entende que " +
-//                    "pisou em uma armadilha que soltou flechas de uma escotilha aberta no teto, mas por sorte você " +
-//                    "entrou correndo e conseguiu escapar desse ataque surpresa.";
-//        } else if (escolha == 3) {
-//            texto_escolha = " Você se concentra e pula em direção à luz, saltando de antes da porta até o interior da sala.";
-//        }
-//
-//        System.out.println("Você se encontra sozinho em uma sala quadrada, contendo uma porta em cada parede. Uma delas " +
-//                "foi aquela pela qual você entrou, que estava aberta, e as outras três estão fechadas. A porta à sua " +
-//                "frente é a maior das quatro, com inscrições em seu entorno em uma língua que você não sabe ler, mas " +
-//                "reconhece como sendo a língua antiga utilizada pelo inimigo. Você se aproxima da porta e percebe que " +
-//                "ela está trancada por duas fechaduras douradas, e você entende que precisará primeiro derrotar o que " +
-//                "estiver nas outras duas portas laterais, antes de conseguir enfrentar o líder.\n" +
-//                "\n" +
-//                "Você se dirige para a porta à direita.\n");
-//
-//        System.out.println("Você se aproxima, tentando ouvir o que acontece porta adentro, mas não escuta nada. Segura " +
-//                "com mais força sua arma com uma mão, enquanto empurra a porta com a outra. Ao entrar, você se depara " +
-//                "com uma sala espaçosa, com vários equipamentos de batalha pendurados nas paredes e dispostos em " +
-//                "armários e mesas. Você imagina que este seja o arsenal do inimigo, onde estão guardados os equipamentos " +
-//                "que seus soldados utilizam quando saem para espalhar o terror nas cidades e vilas da região.\n" +
-//                "\n" +
-//                "Enquanto seu olhar percorre a sala, você ouve a porta se fechando e gira rapidamente para olhar para " +
-//                "trás. Ali, de pé entre você e a porta fechada, bloqueando o caminho do seu destino, está um dos capitães " +
-//                "do inimigo. Um orque horrendo, de armadura, capacete e espada em punho, em posição de combate. Ele avança em sua direção.\n");
 //
 //        //LOOP DE COMBATE
 //
