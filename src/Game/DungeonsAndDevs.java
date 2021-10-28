@@ -59,6 +59,7 @@ public class DungeonsAndDevs {
         System.out.println("Nome do seu personagem: ");
         String nome = input.nextLine();
         heroi.setNome(nome);
+        heroi.setVivo(true);
 
         int sexo = 0;
         while (sexo == 0) {
@@ -114,7 +115,8 @@ public class DungeonsAndDevs {
         System.out.println(heroi);
 
         jogo.setSair(false);
-        while (!jogo.isSair()) {
+        jogo.setZerado(false);
+        while ((!jogo.isSair()) && (!jogo.isZerado())) {
 //        for (FasesDoJogo item : FasesDoJogo.values()) {
 //            System.out.println(item.getTexto());
 //        }
@@ -143,7 +145,8 @@ public class DungeonsAndDevs {
                     motivacao = 0;
                 }
             }
-            heroi.setMotivacao(TiposDeMotivacao.values()[motivacao - 1].getNome());
+//            heroi.setMotivacao(TiposDeMotivacao.values()[motivacao - 1].getNome());
+            heroi.setMotivacao(motivacao - 1);
 
             System.out.println(TiposDeMotivacao.values()[motivacao - 1].getTexto());
 
@@ -221,86 +224,125 @@ public class DungeonsAndDevs {
 
             jogo.luta(heroi, armeiro);
 
+            if (!jogo.isSair()) {
+
+                System.out.println("Após derrotar o Armeiro, você percebe que seus equipamentos estão muito danificados, e olha " +
+                        "em volta, encarando todas aquelas peças de armaduras resistentes e em ótimo estado.");
+
+                int fase3 = 0;
+                while (fase3 == 0) {
+                    tamanho = 0;
+                    for (EscolhasFase3 item : EscolhasFase3.values()) {
+                        System.out.println(item);
+                        tamanho++;
+                    }
+                    fase3 = Integer.parseInt(input.nextLine());
+                    if (!verificaOpcao(tamanho, fase3)) {
+                        fase3 = 0;
+                    }
+                }
+                System.out.println(EscolhasFase3.values()[fase3 - 1].getTexto());
+                if (EscolhasFase3.values()[fase3 - 1].getNome().equals("Pegar")) {
+                    System.out.println("Recuperou 50 de defesa");
+                    heroi.setPontos_defesa(heroi.getPontos_defesa() + 50);
+                }
+                System.out.println(heroi);
+
+
+                System.out.println("Em uma mesa, você encontra uma chave dourada, e sabe que aquela chave abre uma das fechaduras " +
+                        "da porta do líder inimigo. Você pega a chave e guarda numa pequena bolsa que leva presa ao cinto.\n" +
+                        "\n" +
+                        "Você retorna à sala anterior e se dirige à porta da esquerda. Você se aproxima, tentando ouvir o que " +
+                        "acontece porta adentro, mas não escuta nada. Segura com mais força sua arma com uma mão, enquanto empurra " +
+                        "a porta com a outra. Ao entrar, você se depara com uma sala parecida com a do arsenal, mas em vez de " +
+                        "armaduras, existem vários potes e garrafas de vidro com conteúdos misteriosos e de cores diversas, e " +
+                        "você entende que o capitão que vive ali, realiza experimentos com diversos ingredientes, criando " +
+                        "poções utilizadas pelos soldados para aterrorizar a região.\n" +
+                        "No fundo da sala, olhando em sua direção, está outro dos capitães do inimigo. Um orque horrendo, de " +
+                        "armadura, cajado em punho, em posição de combate. Ele avança em sua direção.\n");
+
+                Personagem alquimista = new Personagem();
+                alquimista.setPontos_defesa(500);
+                alquimista.setDano_arma(10);
+                alquimista.setPontos_ataque(80);
+                alquimista.setNome("Bruxa do 71");
+
+                jogo.luta(heroi, alquimista);
+
+                if (!jogo.isSair()) {
+
+                    System.out.println("Após derrotar o Alquimista, você olha em volta, tentando reconhecer alguma poção do estoque " +
+                            "do inimigo. Em uma mesa, você reconhece uma pequena garrafa de vidro contendo um líquido levemente " +
+                            "rosado, pega a garrafa e pondera se deve beber um gole.\n");
+
+                    int fase4 = 0;
+                    while (fase4 == 0) {
+                        tamanho = 0;
+                        for (EscolhasFase4 item : EscolhasFase4.values()) {
+                            System.out.println(item);
+                            tamanho++;
+                        }
+                        fase4 = Integer.parseInt(input.nextLine());
+                        if (!verificaOpcao(tamanho, fase3)) {
+                            fase4 = 0;
+                        }
+                    }
+                    System.out.println(EscolhasFase4.values()[fase4 - 1].getTexto());
+                    if (EscolhasFase4.values()[fase4 - 1].getNome().equals("Beber")) {
+                        System.out.println("Recuperou 100% de defesa");
+                        heroi.setPontos_defesa(ClassesDePersonagem.values()[classe - 1].getPontos_defesa());
+
+                    }
+                    System.out.println(heroi);
+
+                    System.out.println("Ao lado da porta, você vê uma chave dourada em cima de uma mesa, e sabe que aquela chave " +
+                            "abre a outra fechadura da porta do líder inimigo. Você pega a chave e guarda na pequena bolsa que " +
+                            "leva presa ao cinto.\n" +
+                            "\n" +
+                            "De volta à sala das portas, você se dirige à porta final. Coloca as chaves nas fechaduras, e a porta " +
+                            "se abre. Seu coração acelera, memórias de toda a sua vida passam pela sua mente, e você percebe que " +
+                            "está muito próximo do seu objetivo final. Segura sua arma com mais firmeza, foca no combate que você " +
+                            "sabe que irá se seguir, e adentra a porta.\n" +
+                            "\n" +
+                            "Lá dentro, você vê o líder sentado em uma poltrona dourada, com duas fogueiras de cada lado, e " +
+                            "prisioneiros acorrentados às paredes.\n" +
+                            "\n" +
+                            "Ele percebe sua chegada e se levanta com um salto, apanhando seu machado de guerra de lâmina dupla.\n");
+
+
+                    Personagem chefao = new Personagem();
+                    chefao.setPontos_defesa(500);
+                    chefao.setDano_arma(10);
+                    chefao.setPontos_ataque(80);
+                    chefao.setNome("Chefão da Porra Toda");
+
+                    //        //ATACAR OU ESPERAR?
+
+                    jogo.luta(heroi, chefao);
+
+                    System.out.println("Você conseguiu!!!");
+                    System.out.println(TiposDeMotivacao.values()[motivacao - 1].getTexto2());
+
+                    System.out.println("Você se levanta, olha para os prisioneiros, vai de um em um e os liberta, e todos vocês saem " +
+                            "em direção à noite, retornando à cidade. Seu dever está cumprido.");
+                    System.out.println("GAME OVER");
+
+                    jogo.setZerado(true);
+                }
+            }
+        }
+
+        if (jogo.isSair()) {
+            System.out.println("Você não estava preparado para a força do inimigo, e decide fugir para que possa tentar novamente em uma próxima vez.”\n");
+        }
+
+        if (!heroi.isVivo()) {
+            System.out.println("Você não estava preparado para a força do inimigo...\n");
+            int motivacao = heroi.getMotivacao();
+            System.out.println(TiposDeMotivacao.values()[motivacao].getTexto3());
         }
 
 
-//
-//        //LOOP DE COMBATE
-//
-//        System.out.println("Após derrotar o Armeiro, você percebe que seus equipamentos estão muito danificados, e olha " +
-//                "em volta, encarando todas aquelas peças de armaduras resistentes e em ótimo estado.");
-//        System.out.println("1 - Pegar armaduras");
-//        System.out.println("2 - Deixar armaduras");
-//        escolha = input.nextInt();
-//        if (escolha == 1) {
-//            texto_escolha = "Você resolve usar os equipamentos do inimigo contra ele, e trocar algumas peças suas, que " +
-//                    "estavam danificadas, pelas peças de armaduras existentes na sala. De armadura nova, você se sente " +
-//                    "mais protegido para os desafios à sua frente.";
-//            //MAIS 5 PONTOS DE DEFESA PARA O JOGADOR
-//        } else if (escolha == 2) {
-//            texto_escolha = "Você decide que não precisa utilizar nada que venha das mãos do inimigo.";
-//        }
-//
-//
-//        System.out.println("Em uma mesa, você encontra uma chave dourada, e sabe que aquela chave abre uma das fechaduras " +
-//                "da porta do líder inimigo. Você pega a chave e guarda numa pequena bolsa que leva presa ao cinto.\n" +
-//                "\n" +
-//                "Você retorna à sala anterior e se dirige à porta da esquerda. Você se aproxima, tentando ouvir o que " +
-//                "acontece porta adentro, mas não escuta nada. Segura com mais força sua arma com uma mão, enquanto empurra " +
-//                "a porta com a outra. Ao entrar, você se depara com uma sala parecida com a do arsenal, mas em vez de " +
-//                "armaduras, existem vários potes e garrafas de vidro com conteúdos misteriosos e de cores diversas, e " +
-//                "você entende que o capitão que vive ali, realiza experimentos com diversos ingredientes, criando " +
-//                "poções utilizadas pelos soldados para aterrorizar a região.\n" +
-//                "No fundo da sala, olhando em sua direção, está outro dos capitães do inimigo. Um orque horrendo, de " +
-//                "armadura, cajado em punho, em posição de combate. Ele avança em sua direção.\n");
-//
-//        // LOOP DE COMBATE
-//
-//        System.out.println("Após derrotar o Alquimista, você olha em volta, tentando reconhecer alguma poção do estoque " +
-//                "do inimigo. Em uma mesa, você reconhece uma pequena garrafa de vidro contendo um líquido levemente " +
-//                "rosado, pega a garrafa e pondera se deve beber um gole.\n");
-//        System.out.println("1 - Beber");
-//        System.out.println("2 - Não beber");
-//        escolha = input.nextInt();
-//        if (escolha == 1) {
-//            texto_escolha = "Você se sente revigorado para seguir adiante!";
-//            //MAIS 100% DOS PONTOS DE VIDA
-//        } else if (escolha == 2) {
-//            texto_escolha = "Você fica receoso de beber algo produzido pelo inimigo";
-//        }
-//
-//        System.out.println("Ao lado da porta, você vê uma chave dourada em cima de uma mesa, e sabe que aquela chave " +
-//                "abre a outra fechadura da porta do líder inimigo. Você pega a chave e guarda na pequena bolsa que " +
-//                "leva presa ao cinto.\n" +
-//                "\n" +
-//                "De volta à sala das portas, você se dirige à porta final. Coloca as chaves nas fechaduras, e a porta " +
-//                "se abre. Seu coração acelera, memórias de toda a sua vida passam pela sua mente, e você percebe que " +
-//                "está muito próximo do seu objetivo final. Segura sua arma com mais firmeza, foca no combate que você " +
-//                "sabe que irá se seguir, e adentra a porta.\n" +
-//                "\n" +
-//                "Lá dentro, você vê o líder sentado em uma poltrona dourada, com duas fogueiras de cada lado, e " +
-//                "prisioneiros acorrentados às paredes.\n" +
-//                "\n" +
-//                "Ele percebe sua chegada e se levanta com um salto, apanhando seu machado de guerra de lâmina dupla.\n");
-//
-//        //ATACAR OU ESPERAR?
-//
-//        //LOOP DE COMBATE
-//
-//        System.out.println("Você conseguiu!");
-//        if (motivacao == 1) {
-//            texto_motivacao = "Você obteve sua vingança. Você se ajoelha e cai no choro, invadido por uma sensação de " +
-//                    "alívio e felicidade. Você se vingou, tudo que sempre quis, está feito. Agora você pode seguir sua vida.\n";
-//        } else if (motivacao == 2) {
-//            texto_motivacao = "O êxtase em que você se encontra não cabe dentro de si. Você se ajoelha e grita de alegria. " +
-//                    "A glória o aguarda, você a conquistou.";
-//        }
-//
-//        System.out.println("Você se levanta, olha para os prisioneiros, vai de um em um e os liberta, e todos vocês saem " +
-//                "em direção à noite, retornando à cidade. Seu dever está cumprido.");
-//        System.out.println("GAME OVER");
-//
-//
     }
 
 }

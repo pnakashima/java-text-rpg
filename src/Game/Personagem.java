@@ -9,7 +9,8 @@ public class Personagem {
     private int pontos_defesa;
     private String arma;
     private int dano_arma;
-    private String motivacao;
+    private int motivacao;
+    private boolean vivo;
 
     @Override
     public String toString() {
@@ -80,12 +81,20 @@ public class Personagem {
         this.dano_arma = dano_arma;
     }
 
-    public String getMotivacao() {
+    public int getMotivacao() {
         return motivacao;
     }
 
-    public void setMotivacao(String motivacao) {
+    public void setMotivacao(int motivacao) {
         this.motivacao = motivacao;
+    }
+
+    public boolean isVivo() {
+        return vivo;
+    }
+
+    public void setVivo(boolean vivo) {
+        this.vivo = vivo;
     }
 }
 
