@@ -1,6 +1,5 @@
-package Game;
+package DungeonsAndDevs;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Jogo {

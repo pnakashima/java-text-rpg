@@ -1,4 +1,4 @@
-package Game;
+package DungeonsAndDevs;
 
 public enum NiveisDeDificuldade {
     FACIL("Fácil"),

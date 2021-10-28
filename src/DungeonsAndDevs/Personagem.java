@@ -1,4 +1,4 @@
-package Game;
+package DungeonsAndDevs;
 
 public class Personagem {
 

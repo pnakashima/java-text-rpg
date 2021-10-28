@@ -1,6 +1,6 @@
-package Game;
+package DungeonsAndDevs;
 
-public enum TiposDeMotivacao {
+public enum PlayerMotivations {
     VINGANCA("Vingança","Imagens daquela noite trágica invadem sua mente. Você nem precisa se esforçar para\n" +
             "lembrar, pois essas memórias estão sempre presentes, mesmo que de pano de fundo, quando você tem outros\n" +
             "pensamentos em foco, elas nunca o deixaram. Elas são o combustível que te fizeram chegar até aqui. E você\n" +
@@ -17,36 +17,36 @@ public enum TiposDeMotivacao {
             "A glória o aguarda, mas não antes da última batalha.\n", "O êxtase em que você se encontra não cabe dentro de si. Você se ajoelha e grita de alegria. A glória o aguarda, você a conquistou.",
             "A glória que buscavas não será sua, e a cidade aguarda por seu(sua) próximo(a) herói(na).");
 
-    private final String nome;
-    private final String texto;
-    private final String texto2;
-    private final String texto3;
+    private final String name;
+    private final String text1;
+    private final String text2;
+    private final String text3;
 
-    TiposDeMotivacao(String nome, String texto, String texto2, String texto3) {
-        this.nome = nome;
-        this.texto = texto;
-        this.texto2 = texto2;
-        this.texto3 = texto3;
+    PlayerMotivations(String name, String text1, String text2, String text3) {
+        this.name = name;
+        this.text1 = text1;
+        this.text2 = text2;
+        this.text3 = text3;
     }
 
     public String toString() {
         String saida = "%d - %s";
-        return String.format(saida, ordinal()+1, this.nome);
+        return String.format(saida, ordinal()+1, this.name);
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public String getTexto() {
-        return texto;
+    public String getText1() {
+        return text1;
     }
 
-    public String getTexto2() {
-        return texto2;
+    public String getText2() {
+        return text2;
     }
 
-    public String getTexto3() {
-        return texto3;
+    public String getText3() {
+        return text3;
     }
 }
