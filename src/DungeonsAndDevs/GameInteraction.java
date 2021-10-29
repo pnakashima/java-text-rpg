@@ -29,30 +29,26 @@ public class GameInteraction {
     }
 
     public void printMenu() {
-        int i = -1;
+        int i = 0;
         for (String item : this.menu) {
             i++;
             System.out.println(i + " - " + item); // imprime a opção, com o índice
         }
     }
 
-    public List<String> playerChoice() {
-        boolean choiceMade = false;
-        List<String> choice= new ArrayList<>();
-
-        while (!choiceMade) {
+    public String playerChoice() {
+        String choice ="";
+        while (choice=="") {
             Game.clearConsole();
             Game.printHeading(this.title);
             printMenu();
-            int choices = this.menu.size() - 1;
+            int choices = this.menu.size();
             int index = Game.readInt(choices);
-            String indexString = "" + index;
-            String choiceValue = this.menuValues.get(index-1);
-            choice = Arrays.asList(indexString, choiceValue);
-            if (Game.confirmChoice(choiceValue) != 2)
-                choiceMade = true;
+            choice = this.menuValues.get(index-1);
+            if (Game.confirmChoice(choice) == 2)
+                choice = "";
         }
-        return choice;  // retorna {opção, valor da opção}
+        return choice;
     }
 
 

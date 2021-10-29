@@ -101,171 +101,135 @@ public class Game {
 
     public static Player createPlayer() {
         // Nome do personagem
-        String name = "---";
-        while (name.equals("---")) {
+        boolean nameSet = false;
+        String playerName = "";
+        while (!nameSet) {
             printHeading("Qual o seu nome, aventureiro?");
-            name = scanner.nextLine();
-            if (confirmChoice(name) == 2) {
-                name = "---";
-                clearConsole();
-            }
+            playerName = scanner.nextLine();
+            if (confirmChoice(playerName) != 2)
+                nameSet=true;
         }
 
-        //Gênero do personagem
-        String genderMenuTitle = "Escolha o gênero do seu personagem:\n";
-        List<String> genderMenu = new ArrayList<>(Arrays.asList(
-                "Masculino (+20 de Ataque para Guerreiros e Arqueiros)\n",
-                "Feminino (+20 de Ataque para Magas e Estudantes)\n"
-        ));
-        List<String> genderMenuValues = new ArrayList<>(Arrays.asList("Masculino", "Feminino"));
+        clearConsole();
 
+        //Definição dos gêneros de personagem
+        PlayerGender masculino = new PlayerGender("Masculino", 20, Arrays.asList("Guerreiro", "Arqueiro"));
+        PlayerGender feminino = new PlayerGender("Feminino", 20, Arrays.asList("Mago", "Estudante do SENAI"));
+
+        //Mapa de gêneros disponíveis
+        Map<String, PlayerGender> playerGendersMap = new HashMap<>();
+        playerGendersMap.put("Masculino", masculino);
+        playerGendersMap.put("Feminino", feminino);
+
+        //Mapa de armas da classe Guerreiro
+        Map<String, Integer> warriorWeaponsMap = new HashMap<>();
+        warriorWeaponsMap.put("Espada", 25);
+        warriorWeaponsMap.put("Machado", 20);
+        warriorWeaponsMap.put("Martelo", 15);
+        warriorWeaponsMap.put("Clava", 10);
+
+        //Mapa de armas da classe Arqueiro
+        Map<String, Integer> archerWeaponsMap = new HashMap<>();
+        archerWeaponsMap.put("Arco e flecha", 20);
+        archerWeaponsMap.put("Besta e virote", 15);
+
+        //Mapa de armas da classe Mago
+        Map<String, Integer> mageWeaponsMap = new HashMap<>();
+        mageWeaponsMap.put("Cajado", 20);
+
+        //Mapa de armas da classe Estudante
+        Map<String, Integer> studentWeaponsMap = new HashMap<>();
+        studentWeaponsMap.put("Livro", 50);
+
+        //Definição das classes de personagem
+        PlayerClass guerreiro = new PlayerClass("Guerreiro", 100, 700, warriorWeaponsMap);
+        PlayerClass arqueiro = new PlayerClass("Arqueiro", 80, 1000, archerWeaponsMap);
+        PlayerClass mago = new PlayerClass("Mago", 80, 1000, mageWeaponsMap);
+        PlayerClass estudante = new PlayerClass("Estudante do SENAI", 80, 1000, studentWeaponsMap);
+
+        //Mapa de classes disponíveis
+        Map<String, PlayerClass> playerClassesMap = new HashMap<>();
+        playerClassesMap.put("Guerreiro", guerreiro);
+        playerClassesMap.put("Arqueiro", arqueiro);
+        playerClassesMap.put("Mago", mago);
+        playerClassesMap.put("Estudante do SENAI", estudante);
+
+
+        //Escolha do gênero do personagem
+        //Criando array de strings para impressão do menu (genderMenu) e para os valores (nomes) dos gêneros (genderMenuValues)
+        List<String> genderMenu = new ArrayList<>();
+        List<String> genderMenuValues = new ArrayList<>();
+        for (Map.Entry<String, PlayerGender> entry : playerGendersMap.entrySet()) {
+            String genderName = entry.getKey();
+            PlayerGender playerGender = entry.getValue();
+            genderMenu.add(genderName + " (+" + playerGender.getPowerUpPoints() + " pontos de ataque para as classes: " + playerGender.getPowerUpClasses() + ")\n");
+            genderMenuValues.add(genderName);
+        }
+
+        //Instanciando e imprimindo o menu de classes de personagem (título, menu, valores)
+        String genderMenuTitle = "Escolha o gênero do seu personagem:";
         GameInteraction playerGenderMenu = new GameInteraction(genderMenuTitle, genderMenu, genderMenuValues);
-        List<String> genderChoice = playerGenderMenu.playerChoice();
-        String gender = genderChoice.get(1);
+        String playerGenderName = playerGenderMenu.playerChoice();
+        PlayerGender playerGenderClass = playerGendersMap.get(playerGenderName);
 
         enterToContinue();
 
-        //Classe do personagem
-        List<int[]> classOptionAttributes = new ArrayList<>(Arrays.asList(
-                new int[]{100, 700},
-                new int[]{80, 1000},
-                new int[]{120, 600},
-                new int[]{70, 1200}
-        ));
-        List<String> classMenuValues = new ArrayList<>(Arrays.asList("Guerreiro", "Arqueiro", "Mago", "Estudante do SENAI"));
-
-        String classMenuTitle = "Escolha uma classe de combate:";
-
+        //Escolha da Classe do personagem
+        //Criando array de strings para impressão do menu (classMenu) e para os valores (nomes) das classes (classMenuValues)
         List<String> classMenu = new ArrayList<>();
-        for (int i = 0; i < classMenuValues.size(); i++) {
-            classMenu.add(classMenuValues.get(i) + " (Ataque " + classOptionAttributes.get(i)[0] + " | Defesa: " + classOptionAttributes.get(i)[1] + ")\n");
+        List<String> classMenuValues = new ArrayList<>();
+        for (Map.Entry<String, PlayerClass> entry : playerClassesMap.entrySet()) {
+            String className = entry.getKey();
+            PlayerClass playerClass = entry.getValue();
+            classMenu.add(className + " (Ataque " + playerClass.getAttackPoints() + " | Defesa: " + playerClass.getMaxDefensePoints() + ")\n");
+            classMenuValues.add(className);
         }
-//        List<String> classMenu = new ArrayList<>(Arrays.asList(
-//                "Guerreiro (Ataque " + classOptionAttributes.get(0)[0] + " | Defesa: " + classOptionAttributes.get(0)[1] + ")\n",
-//                "Arqueiro (Ataque " + classOptionAttributes.get(1)[0] + " | Defesa: " + classOptionAttributes.get(1)[1] + ")\n",
-//                "Mago (Ataque " + classOptionAttributes.get(2)[0] + " | Defesa: " + classOptionAttributes.get(2)[1] + ")\n",
-//                "Estudante do SENAI (Ataque " + classOptionAttributes.get(3)[0] + " | Defesa: " + classOptionAttributes.get(3)[1] + ")\n"
-//        ));
-        List<String[]> weapons = new ArrayList<>(Arrays.asList(
-                new String[]{"Espada", "Machado", "Martelo", "Clava"},
-                new String[]{"Arco e flecha", "Besta e virote"},
-                new String[]{"Cajado"},
-                new String[]{"Livro"}
-        ));
 
+        //Instanciando e imprimindo o menu de classes de personagem (título, menu, valores)
+        String classMenuTitle = "Escolha uma classe de combate:";
         GameInteraction playerClassMenu = new GameInteraction(classMenuTitle, classMenu, classMenuValues);
-        List<String> classChoice = playerClassMenu.playerChoice();
-        int playerClassIndex = Integer.parseInt(classChoice.get(0));
-        String playerClass = classChoice.get(1);
-        int[] playerAttributes = classOptionAttributes.get(playerClassIndex);
-        int attackPoints = playerAttributes[0];
-        int maxDefensePoints = playerAttributes[1];
-        String[] availableWeapons = weapons.get(playerClassIndex);
+        String playerClassName = playerClassMenu.playerChoice();
+        PlayerClass playerClass = playerClassesMap.get(playerClassName);
+        int attackPoints = playerClass.getAttackPoints();
+        int maxDefensePoints = playerClass.getMaxDefensePoints();
+        Map<String, Integer> availableWeapons = playerClass.getAvailableWeapons();
 
-        if (gender.equals("Masculino") && (playerClass == "Guerreiro" || playerClass == "Arqueiro"))
-            attackPoints += 20;
-        if (gender.equals("Feminino") && (playerClass == "Mago" || playerClass == "Estudante do SENAI"))
+        //Aplicando o power-up de acordo com escolha de classe e gênero
+        if (playerGenderClass.getPowerUpClasses().contains(playerClassName))
             attackPoints += 20;
 
         enterToContinue();
-
-////        //Classe do personagem
-//        String playerClass = "";
-//        int attackPoints = 0;
-//        int maxDefensePoints = 0;
-//        while (playerClass.equals("")) {
-//            clearConsole();
-//            printHeading("Escolha uma classe de combate:");
-//            int options = 0;
-//            for (PlayerClasses item : PlayerClasses.values()) {
-//                options++;
-//                System.out.println(options + " - " + item.getPlayerClass());
-//            }
-//            int input = readInt(options);
-//            playerClass = PlayerClasses.values()[input - 1].getPlayerClass();
-//            attackPoints = PlayerClasses.values()[input - 1].getAttackPoints();
-//            maxDefensePoints = PlayerClasses.values()[input - 1].getMaxDefensePoints();
-//            if (confirmChoice(playerClass) == 2)
-//                playerClass = "";
-//            if (gender.equals("Masculino") && (playerClass == "Guerreiro" || playerClass == "Arqueiro"))
-//                attackPoints += 20;
-//            if (gender.equals("Feminino") && (playerClass == "Mago" || playerClass == "Estudante do SENAI"))
-//                attackPoints += 20;
-//        }
 
         // Arma do personagem
-        List<Integer> weaponOptionAttributes = new ArrayList<>(Arrays.asList(25, 20, 15, 10, 20, 15, 20, 50));
-        List<String> weaponMenuValues = new ArrayList<>(Arrays.asList("Espada", "Machado", "Martelo", "Clava", "Arco e flecha", "Besta e virote", "Cajado", "Livro"));
-        String weaponMenuTitle = "Escolha uma arma:";
 
-
-        List<String> weaponMenu = new ArrayList<>();
-        for (int i = 0; i < classMenuValues.size(); i++) {
-            weaponMenu.add(weaponMenuValues.get(i) + " (Dano " + weaponOptionAttributes.get(i) + ")\n");
+        List<String> weaponsMenu = new ArrayList<>();
+        List<String> weaponsMenuValues = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : availableWeapons.entrySet()) {
+            String weaponName = entry.getKey();
+            Integer weaponDamage = entry.getValue();
+            weaponsMenu.add(weaponName + " (Dano " + weaponDamage  + ")\n");
+            weaponsMenuValues.add(weaponName);
         }
 
+        String weaponMenuTitle = "Escolha uma arma:";
+        GameInteraction playerWeaponMenu = new GameInteraction(weaponMenuTitle, weaponsMenu, weaponsMenuValues);
+        String playerWeaponName = playerWeaponMenu.playerChoice();
+        int weaponDamage = availableWeapons.get(playerWeaponName).intValue();
 
-
-
-        GameInteraction playerClassMenu = new GameInteraction(classMenu, classMenuValues);
-        List<String> classChoice = playerClassMenu.playerChoice();
-        int playerClassIndex = Integer.parseInt(classChoice.get(0));
-        String playerClass = classChoice.get(1);
-        int[] playerAttributes = classOptionAttributes.get(playerClassIndex);
-        int attackPoints = playerAttributes[0];
-        int maxDefensePoints = playerAttributes[1];
-        String[] availableWeapons = weapons.get(playerClassIndex);
-
-        if (gender.equals("Masculino") && (playerClass == "Guerreiro" || playerClass == "Arqueiro"))
-            attackPoints += 20;
-        if (gender.equals("Feminino") && (playerClass == "Mago" || playerClass == "Estudante do SENAI"))
-            attackPoints += 20;
 
         enterToContinue();
 
-
-        //Arma do personagem
-        String weapon = "";
-        String ammo = "";
-        int damage = 0;
-        while (weapon.equals("")) {
-            clearConsole();
-            printHeading("Escolha uma arma:");
-            int start = 1000000;
-            int end = 0;
-            int index = 0;
-            for (PlayerWeapons item : PlayerWeapons.values()) {
-                index = item.ordinal() + 1;
-                if (playerClass.equals(item.getPlayerClass())) {
-                    if (index < start)
-                        start = index;
-                    if (index > end)
-                        end = index;
-                    System.out.println(index + " - " + item);
-                }
-            }
-            int input = readInt(end);
-            weapon = PlayerWeapons.values()[input - 1].getName();
-            ammo = PlayerWeapons.values()[input - 1].getAmmo();
-            if (!ammo.equals(""))
-                weapon = weapon + " e " + ammo;
-            damage = PlayerWeapons.values()[input - 1].getDamage();
-            if (confirmChoice(weapon) == 2)
-                weapon = "";
-
-        }
-
-        Player player = new Player(name, gender, playerClass, maxDefensePoints, attackPoints, weapon, damage);
+        Player player = new Player(playerName, playerGenderName, playerClassName, maxDefensePoints, attackPoints, playerWeaponName, weaponDamage);
 
         clearConsole();
         printHeading("A aventura vai começar!");
-        System.out.println("Nome: " + name
-                + "\nGênero: " + gender
-                + "\nClasse: " + playerClass
+        System.out.println("Nome: " + playerName
+                + "\nGênero: " + playerGenderName
+                + "\nClasse: " + playerClassName
                 + "\nDefesa: " + maxDefensePoints
                 + "\nAtaque: " + attackPoints
-                + "\nArma: " + weapon
-                + "\nDano da Arma: " + damage);
+                + "\nArma: " + playerWeaponName
+                + "\nDano da Arma: " + weaponDamage);
         enterToContinue();
 
         return player;
@@ -281,59 +245,7 @@ public class Game {
             System.out.println("Text RPG by Paulo Nakashima");
             printSeparator(40);
 
-
-            //Gênero do personagem
-            List<String> genderMenu = new ArrayList<>(Arrays.asList(
-                    "Escolha o gênero do seu personagem:\n",
-                    "Masculino (+20 de Ataque para Guerreiros e Arqueiros)\n",
-                    "Feminino (+20 de Ataque para Magas e Estudantes)\n"
-            ));
-            List<String> genderMenuValues = new ArrayList<>(Arrays.asList("Gêneros", "Masculino", "Feminino"));
-
-            GameInteraction playerGenderMenu = new GameInteraction(genderMenu, genderMenuValues);
-            List<String> genderChoice = playerGenderMenu.playerChoice();
-            String gender = genderChoice.get(1);
-
-            enterToContinue();
-
-            //Classe do personagem
-            List<int[]> classOptionAttributes = new ArrayList<>(Arrays.asList(
-                    new int[]{100, 700},
-                    new int[]{80, 1000},
-                    new int[]{120, 600},
-                    new int[]{70, 1200}
-            ));
-            List<String> classMenu = new ArrayList<>(Arrays.asList(
-                    "Escolha uma classe de combate:",
-                    "Guerreiro (Ataque " + classOptionAttributes.get(0)[0] + " | Defesa: " + classOptionAttributes.get(0)[1] + ")\n",
-                    "Arqueiro (Ataque " + classOptionAttributes.get(1)[0] + " | Defesa: " + classOptionAttributes.get(1)[1] + ")\n",
-                    "Mago (Ataque " + classOptionAttributes.get(2)[0] + " | Defesa: " + classOptionAttributes.get(2)[1] + ")\n",
-                    "Estudante do SENAI (Ataque " + classOptionAttributes.get(3)[0] + " | Defesa: " + classOptionAttributes.get(3)[1] + ")\n"
-            ));
-            List<String> classMenuValues = new ArrayList<>(Arrays.asList("Classes de Personagem", "Guerreiro", "Arqueiro", "Mago", "Estudante do SENAI"));
-            List<String[]> weapons = new ArrayList<>(Arrays.asList(
-                    new String[]{"Armas disponíveis"},
-                    new String[]{"Espada", "Machado", "Martelo", "Clava"},
-                    new String[]{"Arco e flecha", "Besta e virote"},
-                    new String[]{"Cajado"},
-                    new String[]{"Livro"}
-            ));
-
-            GameInteraction playerClassMenu = new GameInteraction(classMenu, classMenuValues);
-            List<String> classChoice = playerClassMenu.playerChoice();
-            int playerClassIndex = Integer.parseInt(classChoice.get(0));
-            String playerClass = classChoice.get(1);
-            int[] playerAttributes = classOptionAttributes.get(playerClassIndex);
-            int attackPoints = playerAttributes[0];
-            int maxDefensePoints = playerAttributes[1];
-            String[] availableWeapons = weapons.get(playerClassIndex);
-
-            if (gender.equals("Masculino") && (playerClass == "Guerreiro" || playerClass == "Arqueiro"))
-                attackPoints += 20;
-            if (gender.equals("Feminino") && (playerClass == "Mago" || playerClass == "Estudante do SENAI"))
-                attackPoints += 20;
-
-//            player = createPlayer();
+            player = createPlayer();
 //
 //            Story.intro(player);
 //
