@@ -239,8 +239,6 @@ public class Game {
 
 
         }
-
-
     }
 
     public static int battle(Player player, Enemy enemy) {
@@ -275,7 +273,7 @@ public class Game {
                     System.out.println(String.format("%s ataca e tira %d pontos de defesa de %s", playerName, totalDamage, enemyName));
                 }
                 if (enemy.getDefensePoints() > 0) {
-                    diceDamage = DungeonsAndDevs.rolarDado(20, true);
+                    diceDamage = rollDice(20, true);
                     totalDamage = enemyAttack + diceDamage;
 //                    dano = ataqueInimigo + DungeonsAndDevs.rolarDado(20, true);
                     System.out.println("dano vilao: " + diceDamage);
