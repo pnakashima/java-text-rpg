@@ -21,8 +21,8 @@ public class Story {
                 options++;
                 System.out.println(item);
             }
-            motivation = Game.readInt(1, options);
-            if (Game.confirmChoice("Sua", "motivação", PlayerMotivations.values()[motivation - 1].getName()) == 2) {
+            motivation = Game.readInt(options);
+            if (Game.confirmChoice(PlayerMotivations.values()[motivation - 1].getName()) == 2) {
                 motivation = 0;
                 Game.clearConsole();
             }
@@ -51,8 +51,8 @@ public class Story {
                 System.out.println(item);
                 options++;
             }
-            choice = Game.readInt(1, options);
-            if (Game.confirmChoice("Sua", "escolha", CorridorChoices.values()[choice - 1].getChoice()) == 2)
+            choice = Game.readInt(options);
+            if (Game.confirmChoice(CorridorChoices.values()[choice - 1].getChoice()) == 2)
                 choice = 0;
         }
         if (CorridorChoices.values()[choice - 1].getChoice().equals("Desistir")) {
@@ -75,8 +75,8 @@ public class Story {
                 System.out.println(item);
                 options++;
             }
-            choice = Game.readInt(1, options);
-            if (Game.confirmChoice("Sua", "escolha", MainRoomChoices.values()[choice - 1].getChoice()) == 2) {
+            choice = Game.readInt(options);
+            if (Game.confirmChoice(MainRoomChoices.values()[choice - 1].getChoice()) == 2) {
                 choice = 0;
             }
         }
@@ -141,8 +141,8 @@ public class Story {
                 System.out.println(item);
                 options++;
             }
-            choice = Game.readInt(1, options);
-            if (Game.confirmChoice("Sua", "escolha", ChangeArmorChoices.values()[choice-1].getChoice())==2) {
+            choice = Game.readInt(options);
+            if (Game.confirmChoice(ChangeArmorChoices.values()[choice-1].getChoice())==2) {
                 choice = 0;
             }
         }
@@ -188,8 +188,8 @@ public class Story {
                 System.out.println(item);
                 options++;
             }
-            choice = Game.readInt(1, options);
-            if (Game.confirmChoice("Sua", "escolha", DrinkPotionChoices.values()[choice-1].getChoice())==2) {
+            choice = Game.readInt(options);
+            if (Game.confirmChoice(DrinkPotionChoices.values()[choice-1].getChoice())==2) {
                 choice = 0;
             }
         }
