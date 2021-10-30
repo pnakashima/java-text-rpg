@@ -3,8 +3,7 @@ package DungeonsAndDevs;
 public class Story {
 
     public static void intro(Player player) {
-        Game.clearConsole();
-        Game.printHeading("Dungeons and Devs - A Batalha Final");
+        TextInterface.printTitle("Dungeons and Devs - A Batalha Final");
         System.out.println("A noite se aproxima, a lua já surge no céu, estrelas vão se acendendo, e sob a luz do\n" +
                 "crepúsculo você está prestes a entrar na fase final da sua missão. Você olha para o portal à sua frente,\n" +
                 "e sabe que a partir desse ponto, sua vida mudará para sempre.\n" +
@@ -13,32 +12,34 @@ public class Story {
                 "desgastado depois de tantas lutas. Você está a um passo de encerrar para sempre esse mal.\n" +
                 "Buscando uma injeção de ânimo, você se força a lembrar o que te trouxe até aqui.\n");
 
+
+
         int motivation = 0;
         while (motivation == 0) {
-            Game.printHeading("Escolha sua motivação para invadir a caverna do inimigo e derrotá-lo:");
+            TextInterface.printTitle("Escolha sua motivação para invadir a caverna do inimigo e derrotá-lo:");
             int options = 0;
             for (PlayerMotivations item : PlayerMotivations.values()) {
                 options++;
                 System.out.println(item);
             }
-            motivation = Game.readInt(options);
-            if (Game.confirmChoice(PlayerMotivations.values()[motivation - 1].getName()) == 2) {
+            motivation = TextInterface.readInt(options);
+            if (TextInterface.confirmChoice(PlayerMotivations.values()[motivation - 1].getName()) == 2) {
                 motivation = 0;
-                Game.clearConsole();
+                TextInterface.clearConsole();
             }
         }
 
-        Game.clearConsole();
+        TextInterface.clearConsole();
         System.out.println(PlayerMotivations.values()[motivation - 1].getText1());
-        Game.enterToContinue();
+        TextInterface.enterToContinue();
 
         player.setMotivation(motivation - 1);
     }
 
 
     public static boolean corridor() {
-        Game.clearConsole();
-        Game.printHeading("O Corredor da Morte");
+        TextInterface.clearConsole();
+        TextInterface.printTitle("O Corredor da Morte");
         System.out.println("Inspirado pelo motivo que te trouxe até aqui, você sente seu coração ardendo em chamas, suas\n" +
                 "mãos formigarem em volta da sua arma. Você a segura com firmeza. Seu foco está renovado. Você avança pelo portal.\n" +
                 "A escuridão te envolve. Uma iluminação muito fraca entra pelo portal às suas costas. À sua frente, só é" +
@@ -51,8 +52,8 @@ public class Story {
                 System.out.println(item);
                 options++;
             }
-            choice = Game.readInt(options);
-            if (Game.confirmChoice(CorridorChoices.values()[choice - 1].getChoice()) == 2)
+            choice = TextInterface.readInt(options);
+            if (TextInterface.confirmChoice(CorridorChoices.values()[choice - 1].getChoice()) == 2)
                 choice = 0;
         }
         if (CorridorChoices.values()[choice - 1].getChoice().equals("Desistir")) {
@@ -60,7 +61,7 @@ public class Story {
             System.out.println(CorridorChoices.values()[choice - 1].getText());
             return false;
         }
-        Game.clearConsole();
+        TextInterface.clearConsole();
         System.out.println(CorridorChoices.values()[choice - 1].getText());
         return true;
     }
@@ -75,8 +76,8 @@ public class Story {
                 System.out.println(item);
                 options++;
             }
-            choice = Game.readInt(options);
-            if (Game.confirmChoice(MainRoomChoices.values()[choice - 1].getChoice()) == 2) {
+            choice = TextInterface.readInt(options);
+            if (TextInterface.confirmChoice(MainRoomChoices.values()[choice - 1].getChoice()) == 2) {
                 choice = 0;
             }
         }
@@ -100,7 +101,7 @@ public class Story {
                 "\n" +
                 "Você se dirige para a porta à direita.\n");
 
-        Game.enterToContinue();
+        TextInterface.enterToContinue();
         return true;
     }
 
@@ -125,7 +126,7 @@ public class Story {
             Game.playerDied();
             return false;
         } else {
-            Game.enterToContinue();
+            TextInterface.enterToContinue();
             return true;
         }
     }
@@ -141,8 +142,8 @@ public class Story {
                 System.out.println(item);
                 options++;
             }
-            choice = Game.readInt(options);
-            if (Game.confirmChoice(ChangeArmorChoices.values()[choice-1].getChoice())==2) {
+            choice = TextInterface.readInt(options);
+            if (TextInterface.confirmChoice(ChangeArmorChoices.values()[choice-1].getChoice())==2) {
                 choice = 0;
             }
         }
@@ -155,7 +156,7 @@ public class Story {
         System.out.println("Em uma mesa, você encontra uma chave dourada, e sabe que aquela chave abre uma das fechaduras da porta do líder inimigo. Você pega a chave e guarda numa pequena bolsa que leva presa ao cinto.\n" +
                 "\n");
 
-        Game.enterToContinue();
+        TextInterface.enterToContinue();
     }
 
     public static boolean leftDoor(Player player, Enemy enemy) {
@@ -171,7 +172,7 @@ public class Story {
             Game.playerDied();
             return false;
         } else {
-            Game.enterToContinue();
+            TextInterface.enterToContinue();
             return true;
         }
     }
@@ -188,8 +189,8 @@ public class Story {
                 System.out.println(item);
                 options++;
             }
-            choice = Game.readInt(options);
-            if (Game.confirmChoice(DrinkPotionChoices.values()[choice-1].getChoice())==2) {
+            choice = TextInterface.readInt(options);
+            if (TextInterface.confirmChoice(DrinkPotionChoices.values()[choice-1].getChoice())==2) {
                 choice = 0;
             }
         }
@@ -201,7 +202,7 @@ public class Story {
 
         System.out.println("Ao lado da porta, você vê uma chave dourada em cima de uma mesa, e sabe que aquela chave abre a outra fechadura da porta do líder inimigo. Você pega a chave e guarda na pequena bolsa que leva presa ao cinto.\n");
 
-        Game.enterToContinue();
+        TextInterface.enterToContinue();
     }
 
 
@@ -222,7 +223,7 @@ public class Story {
             Game.playerDied();
             return false;
         } else {
-            Game.enterToContinue();
+            TextInterface.enterToContinue();
             return true;
         }
     }

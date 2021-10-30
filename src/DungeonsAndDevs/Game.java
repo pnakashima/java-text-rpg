@@ -25,53 +25,9 @@ public class Game {
 //    public static String[] places = {"Everlasting Mountains", "Haunted Landlines", "Castle of the Evil Emperor", "Throne Room"};
 
 
-    public static int readInt(int options) {
-        Scanner scanner = new Scanner(System.in);
-        int input = 0;
-        while (input < 1 || input > options) {
-            System.out.println("Digite sua escolha:");
-            try {
-                input = Integer.parseInt(scanner.nextLine());
-            } catch (Exception e) {
-                input = 0;
-                System.out.println("Digite um número entre as opções!");
-            }
-        }
-        return input;
-    }
 
-    public static void clearConsole() {
-        for (int i = 0; i < 100; i++) {
-            System.out.println();
-        }
-    }
 
-    public static void printSeparator(int n) {
-        for (int i = 0; i < n; i++) {
-            System.out.print("-");
-        }
-        System.out.println();
-    }
-
-    public static void printHeading(String title) {
-        printSeparator(30);
-        System.out.println(title);
-        printSeparator(30);
-    }
-
-    public static void enterToContinue() {
-        System.out.println("\nPressione ENTER para continuar...");
-        scanner.nextLine();
-    }
-
-    public static int confirmChoice(String choice) {
-//        clearConsole();
-        printHeading("Sua escolha é: " + choice.toUpperCase() + ".\nDeseja continuar?");
-        System.out.println("1 - Sim!");
-        System.out.println("2 - Não, quero trocar de escolha.");
-        int input = readInt(2);
-        return input;
-    }
+    
 
     public static int rollDice(Integer sides, boolean critic) {
         Random dice = new Random();
@@ -90,13 +46,13 @@ public class Game {
     }
 
     public static void playerDied() {
-        clearConsole();
-        printHeading("You died...");
+        TextInterface.clearConsole();
+        TextInterface.printTitle("You died...");
     }
 
     public static void runAway() {
-        clearConsole();
-        printHeading("Você correu....");
+        TextInterface.clearConsole();
+        TextInterface.printTitle("Você correu....");
     }
 
     public static Player createPlayer() {
@@ -104,13 +60,13 @@ public class Game {
         boolean nameSet = false;
         String playerName = "";
         while (!nameSet) {
-            printHeading("Qual o seu nome, aventureiro?");
+            TextInterface.printTitle("Qual o seu nome, aventureiro?");
             playerName = scanner.nextLine();
-            if (confirmChoice(playerName) != 2)
+            if (TextInterface.confirmChoice(playerName) != 2)
                 nameSet=true;
         }
 
-        clearConsole();
+        TextInterface.clearConsole();
 
         //Definição dos gêneros de personagem
         PlayerGender masculino = new PlayerGender("Masculino", 20, Arrays.asList("Guerreiro", "Arqueiro"));
@@ -168,11 +124,11 @@ public class Game {
 
         //Instanciando e imprimindo o menu de classes de personagem (título, menu, valores)
         String genderMenuTitle = "Escolha o gênero do seu personagem:";
-        GameInteraction playerGenderMenu = new GameInteraction(genderMenuTitle, genderMenu, genderMenuValues);
+        TextInterface playerGenderMenu = new TextInterface(genderMenuTitle, genderMenu, genderMenuValues);
         String playerGenderName = playerGenderMenu.playerChoice();
         PlayerGender playerGenderClass = playerGendersMap.get(playerGenderName);
 
-        enterToContinue();
+        TextInterface.enterToContinue();
 
         //Escolha da Classe do personagem
         //Criando array de strings para impressão do menu (classMenu) e para os valores (nomes) das classes (classMenuValues)
@@ -187,7 +143,7 @@ public class Game {
 
         //Instanciando e imprimindo o menu de classes de personagem (título, menu, valores)
         String classMenuTitle = "Escolha uma classe de combate:";
-        GameInteraction playerClassMenu = new GameInteraction(classMenuTitle, classMenu, classMenuValues);
+        TextInterface playerClassMenu = new TextInterface(classMenuTitle, classMenu, classMenuValues);
         String playerClassName = playerClassMenu.playerChoice();
         PlayerClass playerClass = playerClassesMap.get(playerClassName);
         int attackPoints = playerClass.getAttackPoints();
@@ -198,7 +154,7 @@ public class Game {
         if (playerGenderClass.getPowerUpClasses().contains(playerClassName))
             attackPoints += 20;
 
-        enterToContinue();
+        TextInterface.enterToContinue();
 
         // Arma do personagem
 
@@ -212,17 +168,17 @@ public class Game {
         }
 
         String weaponMenuTitle = "Escolha uma arma:";
-        GameInteraction playerWeaponMenu = new GameInteraction(weaponMenuTitle, weaponsMenu, weaponsMenuValues);
+        TextInterface playerWeaponMenu = new TextInterface(weaponMenuTitle, weaponsMenu, weaponsMenuValues);
         String playerWeaponName = playerWeaponMenu.playerChoice();
         int weaponDamage = availableWeapons.get(playerWeaponName).intValue();
 
 
-        enterToContinue();
+        TextInterface.enterToContinue();
 
         Player player = new Player(playerName, playerGenderName, playerClassName, maxDefensePoints, attackPoints, playerWeaponName, weaponDamage);
 
-        clearConsole();
-        printHeading("A aventura vai começar!");
+        TextInterface.clearConsole();
+        TextInterface.printTitle("A aventura vai começar!");
         System.out.println("Nome: " + playerName
                 + "\nGênero: " + playerGenderName
                 + "\nClasse: " + playerClassName
@@ -230,7 +186,7 @@ public class Game {
                 + "\nAtaque: " + attackPoints
                 + "\nArma: " + playerWeaponName
                 + "\nDano da Arma: " + weaponDamage);
-        enterToContinue();
+        TextInterface.enterToContinue();
 
         return player;
     }
@@ -239,11 +195,11 @@ public class Game {
     public static void startGame() {
 
         while (isRunning) {
-            clearConsole();
-            printSeparator(40);
+            TextInterface.clearConsole();
+            TextInterface.printSeparator(40);
             System.out.println("DUNGEONS AND DEVS");
             System.out.println("Text RPG by Paulo Nakashima");
-            printSeparator(40);
+            TextInterface.printSeparator(40);
 
             player = createPlayer();
 //
@@ -290,7 +246,7 @@ public class Game {
             System.out.println(String.format("Escolha sua ação %s:", playerName));
             System.out.println("1 - Lutar");
             System.out.println("2 - Fugir");
-            choice = readInt(2);
+            choice = TextInterface.readInt(2);
             if (choice == 1) {
 //                System.out.println("Começando Loop:");
                 diceDamage = rollDice(20, true);
