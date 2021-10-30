@@ -4,68 +4,78 @@ import java.util.*;
 
 public class Game {
 
-    static Scanner scanner = new Scanner(System.in);
+    public static Scanner scanner = new Scanner(System.in);
 
-    static Player player;
+    private static String gameMode;
+    private static double easy = 0.80; // no modo fácil, os inimigos causam 20% a menos de dano
+    private static double hard = 0.90; // no modo difícil, o jogador causa 10% a menos de dano
 
+
+    public static Player player;
+
+    //Definição dos inimigos
     static Enemy armeiro = new Enemy("Rambo", 500, 80, 10);
-
-    static Enemy alquimista = new Enemy("Bruxa do 71", 500, 80, 10);
-
+    static Enemy alquimista = new Enemy("Paul Rabbit", 500, 80, 10);
     static Enemy chefao = new Enemy("Chefão da Porra Toda", 500, 80, 10);
 
 
-    public static boolean isRunning = true;
+    public String getGameMode() {
+        return gameMode;
+    }
 
-//    public static String[] encounters = {"Battle", "Battle", "Battle", "Rest", "Rest"};
-//
-//    public static String[] enemies = {"Ogre", "Ogre", "Goblin", "Goblin", "Stone Elemental"};
-//
-//    public static int place = 0, act = 1;
-//    public static String[] places = {"Everlasting Mountains", "Haunted Landlines", "Castle of the Evil Emperor", "Throne Room"};
+    public static void setGameMode() {
+        String gameModeTitle = "Escolha um nível de dificuldade:";
+        List<String> gameModeMenu = Arrays.asList("Fácil", "Médio", "Difícil");
+        List<String> gameModeMenuValues = gameModeMenu;
+        TextInterface gameModeChoices = new TextInterface(gameModeTitle, gameModeMenu, gameModeMenuValues);
+        gameMode = gameModeChoices.playerChoice();
+    }
 
-
-
-
-    
-
-    public static int rollDice(Integer sides, boolean critic) {
+    public static int rollDice(Integer sides) {
         Random dice = new Random();
         int damage = dice.nextInt(sides + 1) + 1;
-        if (critic) {
-            if (damage == sides) {
-                System.out.println("DANO CRÍTICO!!!");
-                damage = 1000;
-            }
-            if (damage == 1) {
-                System.out.println("ERROUUUUUUUUU!!!");
-                damage = 0;
-            }
-        }
         return damage;
     }
 
     public static void playerDied() {
         TextInterface.clearConsole();
-        TextInterface.printTitle("You died...");
+        TextInterface.printTitle("Você não estava preparado para a força do inimigo...");
+        if (player.getMotivation().equals("Vingança"))
+            TextInterface.printTitle("Não foi possível concluir sua vingança, e agora resta saber se alguém se vingará por você.");
+        else {
+            if (player.getGender().equals("Masculino"))
+                TextInterface.printTitle("A glória que buscavas não será sua, e a cidade aguarda por seu próximo herói.");
+            else
+                TextInterface.printTitle("A glória que buscavas não será sua, e a cidade aguarda por sua próxima heroína.");
+        }
     }
 
-    public static void runAway() {
-        TextInterface.clearConsole();
-        TextInterface.printTitle("Você correu....");
+    public static boolean runAway() {
+        int willRun = rollDice(10);
+        if (willRun > 5) {
+            TextInterface.clearConsole();
+            TextInterface.printText("Você não estava preparado para a força do inimigo, e decide fugir para que possa tentar novamente em uma próxima vez.");
+            return true;
+        }
+        return false;
     }
 
     public static Player createPlayer() {
-        // Nome do personagem
+
+        TextInterface.clearConsole();
+
+        System.out.println("Seja bem vindo(a) à BATALHA FINAL!");
+
+        // Nome do personagem  NAO DEVERIA ESTAR COMO SETNAME NA CLASSE? O MESMO VALE PROS OUTROS ATRIBUTOS
         boolean nameSet = false;
         String playerName = "";
         while (!nameSet) {
-            TextInterface.printTitle("Qual o seu nome, aventureiro?");
+            TextInterface.printTitle("Qual o seu nome, aventureiro(a)?");
             playerName = scanner.nextLine();
             if (TextInterface.confirmChoice(playerName) != 2)
-                nameSet=true;
+                nameSet = true;
+            TextInterface.clearConsole();
         }
-
 
         //Definição dos gêneros de personagem
         PlayerGender masculino = new PlayerGender("Masculino", 20, Arrays.asList("Guerreiro", "Arqueiro"));
@@ -97,10 +107,10 @@ public class Game {
         studentWeaponsMap.put("Livro", 50);
 
         //Definição das classes de personagem
-        PlayerClass guerreiro = new PlayerClass("Guerreiro", 100, 700, warriorWeaponsMap);
-        PlayerClass arqueiro = new PlayerClass("Arqueiro", 80, 1000, archerWeaponsMap);
-        PlayerClass mago = new PlayerClass("Mago", 80, 1000, mageWeaponsMap);
-        PlayerClass estudante = new PlayerClass("Estudante do SENAI", 80, 1000, studentWeaponsMap);
+        PlayerClass guerreiro = new PlayerClass("Guerreiro", 100, 700, warriorWeaponsMap, "com seu/sua %s");
+        PlayerClass arqueiro = new PlayerClass("Arqueiro", 80, 1000, archerWeaponsMap, "com seu/sua %s, a/o %s atingiu");
+        PlayerClass mago = new PlayerClass("Mago", 80, 1000, mageWeaponsMap, "com seu %s, lançando uma bola de fogo");
+        PlayerClass estudante = new PlayerClass("Estudante do SENAI", 80, 1000, studentWeaponsMap, "absorvendo energia do %s com uma mão e liberando com a outra");
 
         //Mapa de classes disponíveis
         Map<String, PlayerClass> playerClassesMap = new HashMap<>();
@@ -119,7 +129,7 @@ public class Game {
         for (Map.Entry<String, PlayerGender> entry : playerGendersMap.entrySet()) {
             String genderName = entry.getKey();
             PlayerGender playerGender = entry.getValue();
-            genderMenu.add(genderName + " (+" + playerGender.getPowerUpPoints() + " pontos de ataque para as classes: " + playerGender.getPowerUpClasses() + ")\n");
+            genderMenu.add(genderName + " (+" + playerGender.getPowerUpPoints() + " pontos de ataque para as classes: " + playerGender.getPowerUpClasses() + ")");
             genderMenuValues.add(genderName);
         }
 
@@ -138,7 +148,7 @@ public class Game {
         for (Map.Entry<String, PlayerClass> entry : playerClassesMap.entrySet()) {
             String className = entry.getKey();
             PlayerClass playerClass = entry.getValue();
-            classMenu.add(className + " (Ataque " + playerClass.getAttackPoints() + " | Defesa: " + playerClass.getMaxDefensePoints() + ")\n");
+            classMenu.add(className + " (Ataque " + playerClass.getAttackPoints() + " | Defesa: " + playerClass.getMaxDefensePoints() + ")");
             classMenuValues.add(className);
         }
 
@@ -155,6 +165,7 @@ public class Game {
         if (playerGenderClass.getPowerUpClasses().contains(playerClassName))
             attackPoints += 20;
 
+
         TextInterface.clearConsole();
 
         // Arma do personagem
@@ -163,7 +174,7 @@ public class Game {
         for (Map.Entry<String, Integer> entry : availableWeapons.entrySet()) {
             String weaponName = entry.getKey();
             Integer weaponDamage = entry.getValue();
-            weaponsMenu.add(weaponName + " (Dano " + weaponDamage  + ")\n");
+            weaponsMenu.add(weaponName + " (Dano " + weaponDamage + ")\n");
             weaponsMenuValues.add(weaponName);
         }
 
@@ -173,8 +184,11 @@ public class Game {
         int weaponDamage = availableWeapons.get(playerWeaponName).intValue();
 
 
-
         Player player = new Player(playerName, playerGenderName, playerClassName, maxDefensePoints, attackPoints, playerWeaponName, weaponDamage);
+
+        //Construindo o texto de ataque
+        String classAttackText = playerClass.getAttackText();
+        player.setAttackText(classAttackText);
 
         TextInterface.clearConsole();
         TextInterface.printTitle("A aventura vai começar!");
@@ -184,7 +198,9 @@ public class Game {
                 + "\nDefesa: " + maxDefensePoints
                 + "\nAtaque: " + attackPoints
                 + "\nArma: " + playerWeaponName
-                + "\nDano da Arma: " + weaponDamage);
+                + "\nDano da Arma: " + weaponDamage
+                + "\nModo: " + gameMode
+        );
         TextInterface.enterToContinue();
 
         return player;
@@ -193,12 +209,15 @@ public class Game {
 
     public static void startGame() {
 
-        while (isRunning) {
+        while (true) {
             TextInterface.clearConsole();
-            TextInterface.printSeparator(40);
+            TextInterface.printSeparator(30);
             System.out.println("DUNGEONS AND DEVS");
             System.out.println("Text RPG by Paulo Nakashima");
-            TextInterface.printSeparator(40);
+            TextInterface.printSeparator(30);
+            System.out.println("\n\n");
+
+            setGameMode();
 
             player = createPlayer();
 
@@ -223,72 +242,64 @@ public class Game {
             if (!Story.finalRoom(player, chefao))
                 break;
 
-
+            Story.theEnd(player);
         }
     }
 
-    public static int battle(Player player, Enemy enemy) {
+    public static boolean battle(Player player, Enemy enemy) {
+        TextInterface.clearConsole();
         Scanner input = new Scanner(System.in);
 
         String playerName = player.getName();
         String enemyName = enemy.getName();
-        int playerAttack = player.getAttackPoints() + player.getWeaponDamage();
-        int enemyAttack = enemy.getAttackPoints() + enemy.getWeaponDamage();
-        int totalDamage = 0;
 
-        System.out.println(String.format("Início da luta entre %s e %s", playerName, enemyName));
-        System.out.println(String.format("Herói %s tem %d pontos de defesa e %d pontos de ataque.", playerName, player.getDefensePoints(), playerAttack));
-        System.out.println(String.format("Inimigo %s tem %d pontos de defesa e %d pontos de ataque.", enemyName, enemy.getDefensePoints(), enemyAttack));
-        int choice = 0;
-        int diceDamage = 0;
-        while ((choice != 2) && (player.getDefensePoints() > 0) && (enemy.getDefensePoints() > 0)) {
-            System.out.println(String.format("Escolha sua ação %s:", playerName));
-            System.out.println("1 - Lutar");
-            System.out.println("2 - Fugir");
-            choice = TextInterface.readInt(2);
-            if (choice == 1) {
-//                System.out.println("Começando Loop:");
-                diceDamage = rollDice(20, true);
-                totalDamage = playerAttack + diceDamage;
-//                dano = ataqueHeroi + DungeonsAndDevs.rolarDado(20, true);
-                System.out.println("dano heroi: " + diceDamage);
-                if (diceDamage == 0) {
-                    System.out.println("Você errou seu ataque! O inimigo não sofreu dano algum.");
-                } else {
-                    enemy.setDefensePoints(enemy.getDefensePoints() - totalDamage);
-                    System.out.println(String.format("%s ataca e tira %d pontos de defesa de %s", playerName, totalDamage, enemyName));
-                }
+        TextInterface.printTitle(String.format("Batalha entre %s e %s", playerName, enemyName));
+        System.out.println(String.format("%s tem %d pontos de defesa.", playerName, player.getDefensePoints()));
+        System.out.println(String.format("%s tem %d pontos de defesa.", enemyName, enemy.getDefensePoints()));
+
+        String playerBattleChoice = "Lutar";
+        while ((playerBattleChoice.equals("Lutar")) && (player.getDefensePoints() > 0) && (enemy.getDefensePoints() > 0)) {
+            String battleTitle = "Escolha sua ação";
+            List<String> battleMenu = Arrays.asList("Lutar", "Fugir");
+            List<String> battleMenuValues = battleMenu;
+            TextInterface battle = new TextInterface(battleTitle, battleMenu, battleMenuValues);
+            playerBattleChoice = battle.playerChoice();
+
+            TextInterface.clearConsole();
+
+            if (playerBattleChoice == "Lutar") {
+                int playerAttack = player.attack(enemy.getDefensePoints());
+                if (gameMode.equals("Difícil"))
+                    playerAttack = (int) ((double) playerAttack * hard);
+
+                enemy.setDefensePoints(enemy.getDefensePoints() - playerAttack);
                 if (enemy.getDefensePoints() > 0) {
-                    diceDamage = rollDice(20, true);
-                    totalDamage = enemyAttack + diceDamage;
-//                    dano = ataqueInimigo + DungeonsAndDevs.rolarDado(20, true);
-                    System.out.println("dano vilao: " + diceDamage);
-                    if (diceDamage == 0) {
-                        System.out.println("O inimigo errou o ataque! Você não sofreu dano.");
-                    } else {
-                        player.setDefensePoints(player.getDefensePoints() - totalDamage);
-                        System.out.println(String.format("%s ataca e tira %d pontos de defesa de %s", enemyName, totalDamage, playerName));
-                    }
-
+                    int enemyAttack = player.getDefensePoints();
+                    if (gameMode.equals("Fácil"))
+                        enemyAttack = (int) ((double) enemyAttack * easy);
+                    player.setDefensePoints(player.getDefensePoints() - enemyAttack);
+                } else {
+                    TextInterface.printTitle(String.format("%s venceu a batalha!", playerName));
+                    TextInterface.printText("O inimigo não é páreo para o seu heroísmo, e jaz imóvel aos seus pés.");
+                    TextInterface.enterToContinue();
+                    return true;
                 }
+
+                if (player.getDefensePoints() <= 0) {
+                    TextInterface.printTitle(String.format("%s venceu a batalha!", enemyName));
+                    TextInterface.enterToContinue();
+                    Game.playerDied();
+                    return false;
+                }
+
                 System.out.println(String.format("%s tem %d pontos de defesa e %s tem %d pontos de defesa!", playerName, player.getDefensePoints(), enemyName, enemy.getDefensePoints()));
-                // Escolheu fugir
-            } else if (choice == 2) {
-                isRunning = false;
-                return 0;
-            }
-            // Inimigo venceu
-            if (player.getDefensePoints() <= 0) {
-                System.out.println(String.format("%s venceu a batalha!", enemyName));
-                return -1;
-            }
-            // Jogador venceu
-            if (enemy.getDefensePoints() <= 0) {
-                System.out.println(String.format("%s venceu a batalha!", playerName));
+
+            } else if (playerBattleChoice.equals("Fugir")) {
+                if (Game.runAway())
+                    return false;
             }
         }
-
-        return 1;
+        return true;
     }
 
 

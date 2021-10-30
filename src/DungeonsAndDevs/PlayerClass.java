@@ -8,12 +8,15 @@ public class PlayerClass {
     private int attackPoints;
     private int maxDefensePoints;
     private Map<String, Integer> availableWeapons;
+    private String attackText;
 
-    public PlayerClass(String className, int attackPoints, int maxDefensePoints, Map<String, Integer> availableWeapons) {
+
+    public PlayerClass(String className, int attackPoints, int maxDefensePoints, Map<String, Integer> availableWeapons, String attackText) {
         this.className = className;
         this.attackPoints = attackPoints;
         this.maxDefensePoints = maxDefensePoints;
         this.availableWeapons = availableWeapons;
+        this.attackText = attackText;
     }
 
     public String getClassName() {
@@ -30,5 +33,9 @@ public class PlayerClass {
 
     public Map<String, Integer> getAvailableWeapons() {
         return availableWeapons;
+    }
+
+    public String getAttackText() {
+        return attackText;
     }
 }

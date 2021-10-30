@@ -16,7 +16,7 @@ public abstract class Character {
         this.alive = true;  // personagem começa sempre vivo
     }
 
-    public abstract int attack();
+    public abstract int attack(int defensePoints);
 
     public abstract int defend();
 

@@ -23,12 +23,12 @@ public class TextInterface {
         Scanner scanner = new Scanner(System.in);
         int input = 0;
         while (input < 1 || input > options) {
-            System.out.println("Digite sua escolha:");
+            System.out.println("\nDigite sua escolha:");
             try {
                 input = Integer.parseInt(scanner.nextLine());
             } catch (Exception e) {
                 input = 0;
-                System.out.println("Digite um número entre as opções!");
+                System.out.println("\nDigite um número entre as opções!");
             }
         }
         return input;
@@ -48,9 +48,9 @@ public class TextInterface {
     }
 
     public static void printTitle(String title) {
-        printSeparator(30);
+        printSeparator(80);
         System.out.println(title);
-        printSeparator(30);
+        printSeparator(80);
     }
 
     public static void enterToContinue() {
@@ -84,8 +84,10 @@ public class TextInterface {
             int choices = this.menu.size();
             int index = readInt(choices);
             choice = this.menuValues.get(index-1);
-            if (confirmChoice(choice) == 2)
+            if (confirmChoice(choice) == 2) {
                 choice = "";
+                clearConsole();
+            }
         }
         return choice;
     }
