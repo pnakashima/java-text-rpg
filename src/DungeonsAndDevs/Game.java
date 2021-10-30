@@ -66,7 +66,6 @@ public class Game {
                 nameSet=true;
         }
 
-        TextInterface.clearConsole();
 
         //Definição dos gêneros de personagem
         PlayerGender masculino = new PlayerGender("Masculino", 20, Arrays.asList("Guerreiro", "Arqueiro"));
@@ -111,6 +110,8 @@ public class Game {
         playerClassesMap.put("Estudante do SENAI", estudante);
 
 
+        TextInterface.clearConsole();
+
         //Escolha do gênero do personagem
         //Criando array de strings para impressão do menu (genderMenu) e para os valores (nomes) dos gêneros (genderMenuValues)
         List<String> genderMenu = new ArrayList<>();
@@ -128,7 +129,7 @@ public class Game {
         String playerGenderName = playerGenderMenu.playerChoice();
         PlayerGender playerGenderClass = playerGendersMap.get(playerGenderName);
 
-        TextInterface.enterToContinue();
+        TextInterface.clearConsole();
 
         //Escolha da Classe do personagem
         //Criando array de strings para impressão do menu (classMenu) e para os valores (nomes) das classes (classMenuValues)
@@ -154,10 +155,9 @@ public class Game {
         if (playerGenderClass.getPowerUpClasses().contains(playerClassName))
             attackPoints += 20;
 
-        TextInterface.enterToContinue();
+        TextInterface.clearConsole();
 
         // Arma do personagem
-
         List<String> weaponsMenu = new ArrayList<>();
         List<String> weaponsMenuValues = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : availableWeapons.entrySet()) {
@@ -173,7 +173,6 @@ public class Game {
         int weaponDamage = availableWeapons.get(playerWeaponName).intValue();
 
 
-        TextInterface.enterToContinue();
 
         Player player = new Player(playerName, playerGenderName, playerClassName, maxDefensePoints, attackPoints, playerWeaponName, weaponDamage);
 
@@ -202,27 +201,27 @@ public class Game {
             TextInterface.printSeparator(40);
 
             player = createPlayer();
-//
-//            Story.intro(player);
-//
-//            if (!Story.corridor())
-//                break;
-//
-//            if (!Story.mainRoom(player))
-//                break;
-//
-//            if (!Story.rightDoor(player, armeiro))
-//                break;
-//
-//            Story.changeArmor(player);
-//
-//            if (!Story.leftDoor(player, alquimista))
-//                break;
-//
-//            Story.drinkPotion(player);
-//
-//            if (!Story.finalRoom(player, chefao))
-//                break;
+
+            Story.intro(player);
+
+            if (!Story.corridor())
+                break;
+
+            if (!Story.mainRoom(player))
+                break;
+
+            if (!Story.rightDoor(player, armeiro))
+                break;
+
+            Story.changeArmor(player);
+
+            if (!Story.leftDoor(player, alquimista))
+                break;
+
+            Story.drinkPotion(player);
+
+            if (!Story.finalRoom(player, chefao))
+                break;
 
 
         }

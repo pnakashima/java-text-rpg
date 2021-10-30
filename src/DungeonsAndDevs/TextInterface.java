@@ -2,18 +2,22 @@ package DungeonsAndDevs;
 
 import java.util.List;
 import java.util.Scanner;
-//import org.apache.commons.lang.WordUtils;
+
 
 public class TextInterface {
-    public String title;
-    public List<String> menu;
-    public List<String> menuValues;
+    private String title;
+    private List<String> menu;
+    private List<String> menuValues;
+    private static final String LINEBREAK = "\n";
+
+
 
     public TextInterface(String title, List<String> menu, List<String> menuValues) {
         this.title = title;
         this.menu = menu;
         this.menuValues = menuValues;
     }
+
 
     public static int readInt(int options) {
         Scanner scanner = new Scanner(System.in);
@@ -74,7 +78,7 @@ public class TextInterface {
     public String playerChoice() {
         String choice ="";
         while (choice=="") {
-            clearConsole();
+//            clearConsole();
             printTitle(this.title);
             printMenu();
             int choices = this.menu.size();
@@ -84,6 +88,40 @@ public class TextInterface {
                 choice = "";
         }
         return choice;
+    }
+
+    public static void printText(String text) {
+        System.out.println(wrap(text,80));
+    }
+
+    public static String wrap(String string, int lineLength) {
+        StringBuilder b = new StringBuilder();
+        for (String line : string.split(LINEBREAK)) {
+            b.append(wrapLine(line, lineLength));
+        }
+        return b.toString();
+    }
+
+    private static String wrapLine(String line, int lineLength) {
+        if (line.length() == 0) return LINEBREAK;
+        if (line.length() <= lineLength) return line + LINEBREAK;
+        String[] words = line.split(" ");
+        StringBuilder allLines = new StringBuilder();
+        StringBuilder trimmedLine = new StringBuilder();
+        for (String word : words) {
+            if (trimmedLine.length() + 1 + word.length() <= lineLength)
+                trimmedLine.append(word).append(" ");
+            else {
+                allLines.append(trimmedLine).append(LINEBREAK);
+                trimmedLine = new StringBuilder();
+                trimmedLine.append(word).append(" ");
+            }
+        }
+        if (trimmedLine.length() > 0) {
+            allLines.append(trimmedLine);
+        }
+        allLines.append(LINEBREAK);
+        return allLines.toString();
     }
 
 }

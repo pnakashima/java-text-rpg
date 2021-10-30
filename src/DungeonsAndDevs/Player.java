@@ -6,7 +6,7 @@ public class Player extends Character {
     private String playerClass;
     private String weapon;
     private int weaponDamage;
-    private int motivation;
+    private String motivation;
 
     public Player(String name, String gender, String playerClass, int maxDefensePoints, int attackPoints, String weapon, int weaponDamage) {
         super(name, maxDefensePoints, attackPoints);
@@ -58,11 +58,11 @@ public class Player extends Character {
         this.weaponDamage = weaponDamage;
     }
 
-    public int getMotivation() {
+    public String getMotivation() {
         return motivation;
     }
 
-    public void setMotivation(int motivation) {
+    public void setMotivation(String motivation) {
         this.motivation = motivation;
     }
 }
