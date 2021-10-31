@@ -12,6 +12,10 @@ public class Player extends Character {
     private String motivation;
     private String attackText;
 
+    public Player() {
+
+    }
+
 
     public Player(String name, String gender, String playerClass, int maxDefensePoints, int attackPoints, String weapon, int weaponDamage) {
         super(name, maxDefensePoints, attackPoints);
@@ -20,6 +24,22 @@ public class Player extends Character {
         this.weapon = weapon;
         this.weaponDamage = weaponDamage;
     }
+
+
+    public String readName() {
+        Scanner scanner = new Scanner(System.in);
+        boolean nameSet = false;
+        String playerName = "";
+        while (!nameSet) {
+            TextInterface.printTitle("Qual o seu nome, aventureiro(a)?");
+            playerName = scanner.nextLine();
+            if (TextInterface.confirmChoice(playerName) != 2)
+                nameSet = true;
+            TextInterface.clearConsole();
+        }
+        return playerName;
+    }
+
 
     @Override
     public int attack(int enemyDefensePoints) {

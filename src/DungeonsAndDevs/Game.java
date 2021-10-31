@@ -66,16 +66,20 @@ public class Game {
 
         System.out.println("Seja bem vindo(a) à BATALHA FINAL!");
 
-        // Nome do personagem  NAO DEVERIA ESTAR COMO SETNAME NA CLASSE? O MESMO VALE PROS OUTROS ATRIBUTOS
-        boolean nameSet = false;
-        String playerName = "";
-        while (!nameSet) {
-            TextInterface.printTitle("Qual o seu nome, aventureiro(a)?");
-            playerName = scanner.nextLine();
-            if (TextInterface.confirmChoice(playerName) != 2)
-                nameSet = true;
-            TextInterface.clearConsole();
-        }
+        Player player = new Player();
+
+//        // Nome do personagem  NAO DEVERIA ESTAR COMO SETNAME NA CLASSE? O MESMO VALE PROS OUTROS ATRIBUTOS
+//        boolean nameSet = false;
+//        String playerName = "";
+//        while (!nameSet) {
+//            TextInterface.printTitle("Qual o seu nome, aventureiro(a)?");
+//            playerName = scanner.nextLine();
+//            if (TextInterface.confirmChoice(playerName) != 2)
+//                nameSet = true;
+//            TextInterface.clearConsole();
+//        }
+
+        player.setName(player.readName());
 
         //Definição dos gêneros de personagem
         PlayerGender masculino = new PlayerGender("Masculino", 20, Arrays.asList("Guerreiro", "Arqueiro"));

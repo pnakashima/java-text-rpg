@@ -8,6 +8,9 @@ public abstract class Character {
     private int defensePoints;
     private boolean alive;
 
+    public Character() {
+    }
+
     public Character(String name, int maxDefensePoints, int attackPoints) {
         this.name = name;
         this.maxDefensePoints = maxDefensePoints;
@@ -15,6 +18,8 @@ public abstract class Character {
         this.attackPoints = attackPoints;
         this.alive = true;  // personagem começa sempre vivo
     }
+
+
 
     public abstract int attack(int defensePoints);
 
