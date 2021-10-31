@@ -1,5 +1,8 @@
 package DungeonsAndDevs;
 
+import Enums.PlayerClasses;
+import Enums.PlayerGenders;
+
 import java.util.*;
 
 public class Game {
@@ -68,61 +71,19 @@ public class Game {
 
         Player player = new Player();
 
-//        // Nome do personagem  NAO DEVERIA ESTAR COMO SETNAME NA CLASSE? O MESMO VALE PROS OUTROS ATRIBUTOS
-//        boolean nameSet = false;
-//        String playerName = "";
-//        while (!nameSet) {
-//            TextInterface.printTitle("Qual o seu nome, aventureiro(a)?");
-//            playerName = scanner.nextLine();
-//            if (TextInterface.confirmChoice(playerName) != 2)
-//                nameSet = true;
-//            TextInterface.clearConsole();
-//        }
-
         player.setName(player.readName());
 
-        //Definição dos gêneros de personagem
-        PlayerGender masculino = new PlayerGender("Masculino", 20, Arrays.asList("Guerreiro", "Arqueiro"));
-        PlayerGender feminino = new PlayerGender("Feminino", 20, Arrays.asList("Mago", "Estudante do SENAI"));
-
-        //Mapa de gêneros disponíveis
         Map<String, PlayerGender> playerGendersMap = new HashMap<>();
-        playerGendersMap.put("Masculino", masculino);
-        playerGendersMap.put("Feminino", feminino);
+        for (PlayerGenders item: PlayerGenders.values()) {
+            PlayerGender genderClass = new PlayerGender(item.getGenderName(), item.getPowerUpPoints(), item.getPowerUpClasses());
+            playerGendersMap.put(item.getGenderName(), genderClass);
+        }
 
-        //Mapa de armas da classe Guerreiro
-        Map<String, Integer> warriorWeaponsMap = new HashMap<>();
-        warriorWeaponsMap.put("Espada", 25);
-        warriorWeaponsMap.put("Machado", 20);
-        warriorWeaponsMap.put("Martelo", 15);
-        warriorWeaponsMap.put("Clava", 10);
-
-        //Mapa de armas da classe Arqueiro
-        Map<String, Integer> archerWeaponsMap = new HashMap<>();
-        archerWeaponsMap.put("Arco e flecha", 20);
-        archerWeaponsMap.put("Besta e virote", 15);
-
-        //Mapa de armas da classe Mago
-        Map<String, Integer> mageWeaponsMap = new HashMap<>();
-        mageWeaponsMap.put("Cajado", 20);
-
-        //Mapa de armas da classe Estudante
-        Map<String, Integer> studentWeaponsMap = new HashMap<>();
-        studentWeaponsMap.put("Livro", 50);
-
-        //Definição das classes de personagem
-        PlayerClass guerreiro = new PlayerClass("Guerreiro", 100, 700, warriorWeaponsMap, "com seu/sua %s");
-        PlayerClass arqueiro = new PlayerClass("Arqueiro", 80, 1000, archerWeaponsMap, "com seu/sua %s, a/o %s atingiu");
-        PlayerClass mago = new PlayerClass("Mago", 80, 1000, mageWeaponsMap, "com seu %s, lançando uma bola de fogo");
-        PlayerClass estudante = new PlayerClass("Estudante do SENAI", 80, 1000, studentWeaponsMap, "absorvendo energia do %s com uma mão e liberando com a outra");
-
-        //Mapa de classes disponíveis
         Map<String, PlayerClass> playerClassesMap = new HashMap<>();
-        playerClassesMap.put("Guerreiro", guerreiro);
-        playerClassesMap.put("Arqueiro", arqueiro);
-        playerClassesMap.put("Mago", mago);
-        playerClassesMap.put("Estudante do SENAI", estudante);
-
+        for (PlayerClasses item: PlayerClasses.values()){
+            PlayerClass playerClass = new PlayerClass(item.getClassName(), item.getAttackPoints(), item.getMaxDefensePoints(), item.getWeaponsMap(), item.getAttackText());
+            playerClassesMap.put(item.getClassName(), playerClass);
+        }
 
         TextInterface.clearConsole();
 
@@ -143,6 +104,7 @@ public class Game {
         String playerGenderName = playerGenderMenu.playerChoice();
         PlayerGender playerGenderClass = playerGendersMap.get(playerGenderName);
 
+        player.setGender(playerGenderName);
         TextInterface.clearConsole();
 
         //Escolha da Classe do personagem
@@ -169,7 +131,9 @@ public class Game {
         if (playerGenderClass.getPowerUpClasses().contains(playerClassName))
             attackPoints += 20;
 
-
+        player.setPlayerClass(playerClassName);
+        player.setMaxDefensePoints(maxDefensePoints);
+        player.setAttackPoints(attackPoints);
         TextInterface.clearConsole();
 
         // Arma do personagem
@@ -187,8 +151,8 @@ public class Game {
         String playerWeaponName = playerWeaponMenu.playerChoice();
         int weaponDamage = availableWeapons.get(playerWeaponName).intValue();
 
-
-        Player player = new Player(playerName, playerGenderName, playerClassName, maxDefensePoints, attackPoints, playerWeaponName, weaponDamage);
+        player.setWeapon(playerWeaponName);
+        player.setWeaponDamage(weaponDamage);
 
         //Construindo o texto de ataque
         String classAttackText = playerClass.getAttackText();
@@ -196,7 +160,7 @@ public class Game {
 
         TextInterface.clearConsole();
         TextInterface.printTitle("A aventura vai começar!");
-        System.out.println("Nome: " + playerName
+        System.out.println("Nome: " + player.getName()
                 + "\nGênero: " + playerGenderName
                 + "\nClasse: " + playerClassName
                 + "\nDefesa: " + maxDefensePoints

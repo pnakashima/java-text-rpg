@@ -66,16 +66,32 @@ public class Player extends Character {
         return gender;
     }
 
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public String getPlayerClass() {
         return playerClass;
+    }
+
+    public void setPlayerClass(String playerClass) {
+        this.playerClass = playerClass;
     }
 
     public String getWeapon() {
         return weapon;
     }
 
+    public void setWeapon(String weapon) {
+        this.weapon = weapon;
+    }
+
     public int getWeaponDamage() {
         return weaponDamage;
+    }
+
+    public void setWeaponDamage(int weaponDamage) {
+        this.weaponDamage = weaponDamage;
     }
 
     public String getMotivation() {
