@@ -3,27 +3,23 @@ package DungeonsAndDevs;
 public abstract class Character {
 
     private String name;
-    private int maxDefensePoints;
+    private int maxHealthPoints;
+    private int healthPoints;
     private int attackPoints;
     private int defensePoints;
-    private boolean alive;
 
     public Character() {
     }
 
-    public Character(String name, int maxDefensePoints, int attackPoints) {
+    public Character(String name, int maxHealthPoints, int attackPoints, int defensePoints) {
         this.name = name;
-        this.maxDefensePoints = maxDefensePoints;
-        this.defensePoints = maxDefensePoints;  // personagem começa sempre com energia completa
+        this.maxHealthPoints = maxHealthPoints;
+        this.healthPoints = maxHealthPoints;  // personagem começa sempre com energia completa
         this.attackPoints = attackPoints;
-        this.alive = true;  // personagem começa sempre vivo
+        this.defensePoints = defensePoints;
     }
 
-
-
-    public abstract int attack(int defensePoints);
-
-    public abstract int defend();
+    public abstract int attack(int defensePoints, int healthPoints);
 
     public String getName() {
         return name;
@@ -33,12 +29,20 @@ public abstract class Character {
         this.name = name;
     }
 
-    public int getMaxDefensePoints() {
-        return maxDefensePoints;
+    public int getMaxHealthPoints() {
+        return maxHealthPoints;
     }
 
-    public void setMaxDefensePoints(int maxDefensePoints) {
-        this.maxDefensePoints = maxDefensePoints;
+    public void setMaxHealthPoints(int maxHealthPoints) {
+        this.maxHealthPoints = maxHealthPoints;
+    }
+
+    public int getHealthPoints() {
+        return healthPoints;
+    }
+
+    public void setHealthPoints(int healthPoints) {
+        this.healthPoints = healthPoints;
     }
 
     public int getAttackPoints() {
@@ -49,14 +53,6 @@ public abstract class Character {
         this.attackPoints = attackPoints;
     }
 
-    public boolean isAlive() {
-        return alive;
-    }
-
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
-
     public int getDefensePoints() {
         return defensePoints;
     }
@@ -64,6 +60,4 @@ public abstract class Character {
     public void setDefensePoints(int defensePoints) {
         this.defensePoints = defensePoints;
     }
-
-
 }

@@ -1,30 +1,18 @@
 package DungeonsAndDevs;
 
-import java.util.Locale;
 import java.util.Scanner;
 
 public class Player extends Character {
 
     private String gender;
-    private String playerClass;
+    private String playerClassName;
     private String weapon;
     private int weaponDamage;
     private String motivation;
     private String attackText;
 
     public Player() {
-
     }
-
-
-    public Player(String name, String gender, String playerClass, int maxDefensePoints, int attackPoints, String weapon, int weaponDamage) {
-        super(name, maxDefensePoints, attackPoints);
-        this.gender = gender;
-        this.playerClass = playerClass;
-        this.weapon = weapon;
-        this.weaponDamage = weaponDamage;
-    }
-
 
     public String readName() {
         Scanner scanner = new Scanner(System.in);
@@ -40,27 +28,31 @@ public class Player extends Character {
         return playerName;
     }
 
-
     @Override
-    public int attack(int enemyDefensePoints) {
+    public int attack(int enemyDefensePoints, int enemyHealthPoints) {
         int diceDamage = Game.rollDice(20);
         int playerAttack = this.getAttackPoints() + this.getWeaponDamage() + diceDamage;
+
+        if (Game.gameMode.equals("Difícil"))
+            playerAttack = (int) ((double) playerAttack * Game.hard);
+
         if (diceDamage == 1) {
             TextInterface.printText("Você errou seu ataque! O inimigo não sofreu dano algum.");
             return 0;
-        } else if (diceDamage == 20) {
+        } else if (diceDamage == 20)
             TextInterface.printText("Você acertou um ataque crítico!");
-            playerAttack = enemyDefensePoints;
-        } else
-            playerAttack = (enemyDefensePoints - playerAttack < 0) ? enemyDefensePoints : playerAttack;
+        else
+            // Se o ataque não foi crítico nem nulo, subtrai do ataque os pontos de defesa do inimigo
+            playerAttack -= enemyDefensePoints;
+
+        // Se o valor do ataque é maior que os pontos de vida do inimigo, o valor do ataque se torna o valor restante de vida do inimigo
+        playerAttack = (enemyHealthPoints - playerAttack < 0) ? enemyHealthPoints : playerAttack;
+
         TextInterface.printText(this.attackText + " e causou " + playerAttack + " de dano ao inimigo!");
+
         return playerAttack;
     }
 
-    @Override
-    public int defend() {
-        return 0;
-    }
 
     public String getGender() {
         return gender;
@@ -70,12 +62,12 @@ public class Player extends Character {
         this.gender = gender;
     }
 
-    public String getPlayerClass() {
-        return playerClass;
+    public String getPlayerClassName() {
+        return playerClassName;
     }
 
-    public void setPlayerClass(String playerClass) {
-        this.playerClass = playerClass;
+    public void setPlayerClassName(String playerClassName) {
+        this.playerClassName = playerClassName;
     }
 
     public String getWeapon() {
@@ -108,7 +100,6 @@ public class Player extends Character {
 
     public void setAttackText(String classAttackText) {
         String text = "Você atacou " + classAttackText;
-        System.out.println("setAttack " + text);
         String weapon = this.weapon.toLowerCase();
         String ammo = "";
         String[] weaponSplit = weapon.split(" e ");

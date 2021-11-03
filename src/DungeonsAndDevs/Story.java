@@ -3,6 +3,7 @@ package DungeonsAndDevs;
 import java.util.Arrays;
 import java.util.List;
 
+// Nesta classe, cada fase do jogo é um método
 
 public class Story {
 
@@ -66,22 +67,20 @@ public class Story {
         List<String> mainRoomMenuValues = mainRoomMenu;
         TextInterface mainRoom = new TextInterface(mainRoomTitle, mainRoomMenu, mainRoomMenuValues);
         String playerMainRoomChoice = mainRoom.playerChoice();
+
         TextInterface.clearConsole();
+
         if (playerMainRoomChoice.equals("Andando")) {
             TextInterface.printText("Você toma cuidado e vai caminhando vagarosamente em direção à luz. Quando você pisa exatamente embaixo da porta, você sente o chão ceder levemente, como se tivesse pisado em uma pedra solta. Você ouve um ruído de mecanismos se movimentando, e uma escotilha se abre no teto atrás de você, no corredor. Flechas voam da escotilha em sua direção, e você salta para dentro da sala, porém uma delas te acerta na perna.");
             //Implementei o dano desta fase como sendo de 0 a 20% dos pontos de vida do personagem
             int dice = Game.rollDice(20);
-            double damage = (double) dice / 100 * (double) player.getDefensePoints();
-//            System.out.println("Dado: " + dice);
-//            System.out.println("Dano: " + damage);
-            player.setDefensePoints(player.getDefensePoints() - (int) damage);
-            TextInterface.printTitle(player.getName() + " perdeu " + dice + "% dos pontos de defesa e tem agora " + player.getDefensePoints() + " pontos.");
-            if (player.getDefensePoints() <= 0) {
-                Game.playerDied();
-                return false;
-            }
+            double damage = (double) dice / 100 * (double) player.getHealthPoints();
+            player.setHealthPoints(player.getHealthPoints() - (int) damage);
+            TextInterface.printTitle(player.getName() + " perdeu " + dice + "% dos pontos de vida e tem agora " + player.getHealthPoints() + " pontos.");
+
         } else if (playerMainRoomChoice.equals("Correndo")) {
             TextInterface.printText("Você respira fundo e desata a correr em direção à sala. Quando passa pela porta, sente que pisou em uma pedra solta, mas não dá muita importância e segue para dentro da sala, olhando ao redor à procura de inimigos. Não tem ninguém, mas você ouve sons de flechas batendo na pedra atrás de você, e quando se vira, vê várias flechas no chão. Espiando pela porta, você entende que pisou em uma armadilha que soltou flechas de uma escotilha aberta no teto, mas por sorte você entrou correndo e conseguiu escapar desse ataque surpresa.");
+
         } else
             TextInterface.printText("Você se concentra e pula em direção à luz, saltando de antes da porta até o interior da sala.");
 
@@ -110,7 +109,11 @@ public class Story {
                 "trás. Ali, de pé entre você e a porta fechada, bloqueando o caminho do seu destino, está um dos capitães " +
                 "do inimigo. Um orque horrendo, de armadura, capacete e espada em punho, em posição de combate. Ele avança em sua direção.\n");
 
+        TextInterface.enterToContinue();
+
         TextInterface.printTitle("PREPARE-SE PARA O COMBATE!!!");
+
+        Game.printPreBattle(player, enemy);
 
         TextInterface.enterToContinue();
 
@@ -134,13 +137,12 @@ public class Story {
 
         if (playerChangeArmorChoice.equals("Trocar armadura")) {
             TextInterface.printText("Você resolve usar os equipamentos do inimigo contra ele, e trocar algumas peças suas, que estavam danificadas, pelas peças de armaduras existentes na sala. De armadura nova, você se sente mais protegido para os desafios à sua frente.");
-            player.setDefensePoints(player.getDefensePoints() + 50);
-            System.out.println("Recuperou 50 de defesa");
+            player.setDefensePoints(player.getDefensePoints() + 5);
+            TextInterface.printTitle("Você ganhou mais 5 pontos de defesa!");
         } else
             TextInterface.printText("Você decide que não precisa utilizar nada que venha das mãos do inimigo.");
 
-        TextInterface.printText("Em uma mesa, você encontra uma chave dourada, e sabe que aquela chave abre uma das fechaduras da porta do líder inimigo. Você pega a chave e guarda numa pequena bolsa que leva presa ao cinto.\n" +
-                "\n");
+        TextInterface.printText("\nEm uma mesa, você encontra uma chave dourada, e sabe que aquela chave abre uma das fechaduras da porta do líder inimigo. Você pega a chave e guarda numa pequena bolsa que leva presa ao cinto.\n");
 
         TextInterface.enterToContinue();
     }
@@ -153,8 +155,11 @@ public class Story {
         TextInterface.printText("Você retorna à sala anterior e se dirige à porta da esquerda. Você se aproxima, tentando ouvir o que acontece porta adentro, mas não escuta nada. Segura com mais força sua arma com uma mão, enquanto empurra a porta com a outra. Ao entrar, você se depara com uma sala parecida com a do arsenal, mas em vez de armaduras, existem vários potes e garrafas de vidro com conteúdos misteriosos e de cores diversas, e você entende que o capitão que vive ali, realiza experimentos com diversos ingredientes, criando poções utilizadas pelos soldados para aterrorizar a região.\n" +
                 "\nNo fundo da sala, olhando em sua direção, está outro dos capitães do inimigo. Um orque horrendo, de armadura, cajado em punho, em posição de combate. Ele avança em sua direção.\n");
 
+        TextInterface.enterToContinue();
 
         TextInterface.printTitle("PREPARE-SE PARA O COMBATE!!!");
+
+        Game.printPreBattle(player, enemy);
 
         TextInterface.enterToContinue();
 
@@ -176,11 +181,10 @@ public class Story {
         String playerDrinkPotionChoice = drinkPotion.playerChoice();
         TextInterface.clearConsole();
         if (playerDrinkPotionChoice.equals("Beber a poção")) {
-            player.setDefensePoints(player.getMaxDefensePoints());
-            System.out.println("Você se sente revigorado para seguir adiante!");
+            player.setHealthPoints(player.getMaxHealthPoints());
+            TextInterface.printTitle("Você se sente revigorado para seguir adiante!");
         } else
-            System.out.println("Você fica receoso de beber algo produzido pelo inimigo.");
-
+            TextInterface.printTitle("Você fica receoso de beber algo produzido pelo inimigo.");
 
 
         TextInterface.printText("\nAo lado da porta, você vê uma chave dourada em cima de uma mesa, e sabe que aquela chave abre a outra fechadura da porta do líder inimigo. Você pega a chave e guarda na pequena bolsa que leva presa ao cinto.\n");
@@ -201,7 +205,11 @@ public class Story {
                 "Ele percebe sua chegada e se levanta com um salto, apanhando seu machado de guerra de lâmina dupla.\n" +
                 "\n");
 
+        TextInterface.enterToContinue();
+
         TextInterface.printTitle("PREPARE-SE PARA O COMBATE FINAL!!!");
+
+        Game.printPreBattle(player, enemy);
 
         TextInterface.enterToContinue();
 

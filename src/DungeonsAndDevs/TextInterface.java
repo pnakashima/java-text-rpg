@@ -3,6 +3,7 @@ package DungeonsAndDevs;
 import java.util.List;
 import java.util.Scanner;
 
+// Esta classe contém os métodos para leitura de entradas do usuário e impressão de textos na tela
 
 public class TextInterface {
     private String title;
@@ -10,15 +11,13 @@ public class TextInterface {
     private List<String> menuValues;
     private static final String LINEBREAK = "\n";
 
-
-
     public TextInterface(String title, List<String> menu, List<String> menuValues) {
         this.title = title;
         this.menu = menu;
         this.menuValues = menuValues;
     }
 
-
+    // Método para leitura de escolha do usuário
     public static int readInt(int options) {
         Scanner scanner = new Scanner(System.in);
         int input = 0;
@@ -75,10 +74,10 @@ public class TextInterface {
         }
     }
 
+    // Método para leitura, confirmação e verificação da escolha do usuário
     public String playerChoice() {
         String choice ="";
         while (choice=="") {
-//            clearConsole();
             printTitle(this.title);
             printMenu();
             int choices = this.menu.size();

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum PlayerGenders {
-    MASCULINO("Masculino",20, Arrays.asList("Guerreiro", "Arqueiro")),
+    MASCULINO("Masculino", 20, Arrays.asList("Guerreiro", "Arqueiro")),
     FEMININO("Feminino", 20, Arrays.asList("Mago", "Estudante do SENAI"));
 
     private final String genderName;
@@ -16,6 +16,13 @@ public enum PlayerGenders {
         this.powerUpPoints = powerUpPoints;
         this.powerUpClasses = powerUpClasses;
     }
+
+    @Override
+    public String toString() {
+        String saida = "%d - %s";
+        return String.format(saida, ordinal() + 1, this.genderName);
+    }
+
 
     public String getGenderName() {
         return genderName;
