@@ -17,6 +17,11 @@ public class TextInterface {
         this.menuValues = menuValues;
     }
 
+    public TextInterface(String title, List<String> menu) {
+        this.title = title;
+        this.menu = menu;
+    }
+
     // Método para leitura de escolha do usuário
     public static int readInt(int options) {
         Scanner scanner = new Scanner(System.in);
@@ -62,8 +67,7 @@ public class TextInterface {
         printTitle("Sua escolha é: " + choice.toUpperCase() + ".\nDeseja continuar?");
         System.out.println("1 - Sim!");
         System.out.println("2 - Não, quero trocar de escolha.");
-        int input = readInt(2);
-        return input;
+        return readInt(2);
     }
 
     public void printMenu() {
@@ -75,16 +79,17 @@ public class TextInterface {
     }
 
     // Método para leitura, confirmação e verificação da escolha do usuário
-    public String playerChoice() {
-        String choice ="";
-        while (choice=="") {
+    public int playerChoice() {
+        int choice = 0;
+        while (choice == 0) {
             printTitle(this.title);
             printMenu();
-            int choices = this.menu.size();
-            int index = readInt(choices);
-            choice = this.menuValues.get(index-1);
-            if (confirmChoice(choice) == 2) {
-                choice = "";
+            choice = readInt(this.menu.size());
+            if (this.menuValues != null && (confirmChoice(this.menuValues.get(choice - 1)) == 2)) {
+                choice = 0;
+                clearConsole();
+            } else if (this.menuValues == null && (confirmChoice(this.menu.get(choice - 1)) == 2)){
+                choice = 0;
                 clearConsole();
             }
         }
@@ -92,7 +97,7 @@ public class TextInterface {
     }
 
     public static void printText(String text) {
-        System.out.println(wrap(text,80));
+        System.out.println(wrap(text, 80));
     }
 
     public static String wrap(String string, int lineLength) {

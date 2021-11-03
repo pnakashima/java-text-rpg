@@ -19,9 +19,9 @@ public class Story {
 
         String motivationTitle = "Escolha sua motivação para invadir a caverna do inimigo e derrotá-lo:";
         List<String> motivationMenu = Arrays.asList("Vingança", "Glória");
-        List<String> motivationMenuValues = motivationMenu;
-        TextInterface motivation = new TextInterface(motivationTitle, motivationMenu, motivationMenuValues);
-        String playerMotivation = motivation.playerChoice();
+        TextInterface motivation = new TextInterface(motivationTitle, motivationMenu);
+        int playerMotivationChoice = motivation.playerChoice();
+        String playerMotivation = motivationMenu.get(playerMotivationChoice - 1);
         player.setMotivation(playerMotivation);
 
         TextInterface.clearConsole();
@@ -44,12 +44,11 @@ public class Story {
 
         String corridorTitle = "Escolha sua opção:";
         List<String> corridorMenu = Arrays.asList("Seguir em frente", "Desistir");
-        List<String> corridorMenuValues = corridorMenu;
-        TextInterface corridor = new TextInterface(corridorTitle, corridorMenu, corridorMenuValues);
-        String playerCorridorChoice = corridor.playerChoice();
+        TextInterface corridor = new TextInterface(corridorTitle, corridorMenu);
+        int playerCorridorChoice = corridor.playerChoice();
         TextInterface.clearConsole();
-        if (playerCorridorChoice.equals("Desistir")) {
-            TextInterface.printText("O medo invade o seu coração e você sente que ainda não está à altura do desafio. Você se volta para a noite lá fora e corre em direção à segurança.");
+        if (playerCorridorChoice == 2) {
+            TextInterface.printTitle("O medo invade o seu coração e você sente que ainda não está à altura do desafio. Você se volta para a noite lá fora e corre em direção à segurança.");
             return false;
         }
 
@@ -64,13 +63,12 @@ public class Story {
 
         String mainRoomTitle = "Escolha sua opção para atravessar a porta:";
         List<String> mainRoomMenu = Arrays.asList("Saltando", "Andando", "Correndo");
-        List<String> mainRoomMenuValues = mainRoomMenu;
-        TextInterface mainRoom = new TextInterface(mainRoomTitle, mainRoomMenu, mainRoomMenuValues);
-        String playerMainRoomChoice = mainRoom.playerChoice();
+        TextInterface mainRoom = new TextInterface(mainRoomTitle, mainRoomMenu);
+        int playerMainRoomChoice = mainRoom.playerChoice();
 
         TextInterface.clearConsole();
 
-        if (playerMainRoomChoice.equals("Andando")) {
+        if (playerMainRoomChoice == 2) {
             TextInterface.printText("Você toma cuidado e vai caminhando vagarosamente em direção à luz. Quando você pisa exatamente embaixo da porta, você sente o chão ceder levemente, como se tivesse pisado em uma pedra solta. Você ouve um ruído de mecanismos se movimentando, e uma escotilha se abre no teto atrás de você, no corredor. Flechas voam da escotilha em sua direção, e você salta para dentro da sala, porém uma delas te acerta na perna.");
             //Implementei o dano desta fase como sendo de 0 a 20% dos pontos de vida do personagem
             int dice = Game.rollDice(20);
@@ -78,7 +76,7 @@ public class Story {
             player.setHealthPoints(player.getHealthPoints() - (int) damage);
             TextInterface.printTitle(player.getName() + " perdeu " + dice + "% dos pontos de vida e tem agora " + player.getHealthPoints() + " pontos.");
 
-        } else if (playerMainRoomChoice.equals("Correndo")) {
+        } else if (playerMainRoomChoice == 3) {
             TextInterface.printText("Você respira fundo e desata a correr em direção à sala. Quando passa pela porta, sente que pisou em uma pedra solta, mas não dá muita importância e segue para dentro da sala, olhando ao redor à procura de inimigos. Não tem ninguém, mas você ouve sons de flechas batendo na pedra atrás de você, e quando se vira, vê várias flechas no chão. Espiando pela porta, você entende que pisou em uma armadilha que soltou flechas de uma escotilha aberta no teto, mas por sorte você entrou correndo e conseguiu escapar desse ataque surpresa.");
 
         } else
@@ -129,13 +127,12 @@ public class Story {
 
         String changeArmorTitle = "Escolha sua opção";
         List<String> changeArmorMenu = Arrays.asList("Trocar armadura", "Continuar com minha armadura");
-        List<String> changeArmorMenuValues = changeArmorMenu;
-        TextInterface changeArmor = new TextInterface(changeArmorTitle, changeArmorMenu, changeArmorMenuValues);
-        String playerChangeArmorChoice = changeArmor.playerChoice();
+        TextInterface changeArmor = new TextInterface(changeArmorTitle, changeArmorMenu);
+        int playerChangeArmorChoice = changeArmor.playerChoice();
 
         TextInterface.clearConsole();
 
-        if (playerChangeArmorChoice.equals("Trocar armadura")) {
+        if (playerChangeArmorChoice == 1) {
             TextInterface.printText("Você resolve usar os equipamentos do inimigo contra ele, e trocar algumas peças suas, que estavam danificadas, pelas peças de armaduras existentes na sala. De armadura nova, você se sente mais protegido para os desafios à sua frente.");
             player.setDefensePoints(player.getDefensePoints() + 5);
             TextInterface.printTitle("Você ganhou mais 5 pontos de defesa!");
@@ -176,11 +173,10 @@ public class Story {
 
         String drinkPotionTitle = "Escolha sua opção";
         List<String> drinkPotionMenu = Arrays.asList("Beber a poção", "Jogar a poção fora");
-        List<String> drinkPotionMenuValues = drinkPotionMenu;
-        TextInterface drinkPotion = new TextInterface(drinkPotionTitle, drinkPotionMenu, drinkPotionMenuValues);
-        String playerDrinkPotionChoice = drinkPotion.playerChoice();
+        TextInterface drinkPotion = new TextInterface(drinkPotionTitle, drinkPotionMenu);
+        int playerDrinkPotionChoice = drinkPotion.playerChoice();
         TextInterface.clearConsole();
-        if (playerDrinkPotionChoice.equals("Beber a poção")) {
+        if (playerDrinkPotionChoice == 1) {
             player.setHealthPoints(player.getMaxHealthPoints());
             TextInterface.printTitle("Você se sente revigorado para seguir adiante!");
         } else
@@ -221,9 +217,9 @@ public class Story {
         TextInterface.printTitle("Você conseguiu!!!");
 
         if (player.getMotivation().equals("Vingança"))
-            TextInterface.printText("Você obteve sua vingança. Você se ajoelha e cai no choro, invadido por uma sensação de alívio e felicidade. Você se vingou, tudo que sempre quis, está feito. Agora você pode seguir sua vida.");
+            TextInterface.printText("\nVocê obteve sua vingança. Você se ajoelha e cai no choro, invadido por uma sensação de alívio e felicidade. Você se vingou, tudo que sempre quis, está feito. Agora você pode seguir sua vida.");
         else
-            TextInterface.printText("O êxtase em que você se encontra não cabe dentro de si. Você se ajoelha e grita de alegria. A glória o aguarda, você a conquistou.");
+            TextInterface.printText("\nO êxtase em que você se encontra não cabe dentro de si. Você se ajoelha e grita de alegria. A glória o aguarda, você a conquistou.");
 
         TextInterface.printText("Você se levanta, olha para os prisioneiros, vai de um em um e os liberta, e todos vocês saem em direção à noite, retornando à cidade. Seu dever está cumprido.");
 
